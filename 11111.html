@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>МЗ-Д4 — Автономный робототехнический комплекс</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background: #f5f3ef;
+        color: #1a1a1a;
+        line-height: 1.7;
+        font-size: 16px;
+    }
+    
+    /* Navigation */
+    .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: #1a1a2e;
+        padding: 0 3rem;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 3px solid #c41a1f;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: white;
+        font-size: 1.3rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    
+    .nav-logo .logo-box {
+        width: 45px;
+        height: 45px;
+        background: #c41a1f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+    
+    .nav-links {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .nav-link {
+        padding: 0.6rem 1.3rem;
+        color: rgba(255,255,255,0.75);
+        text-decoration: none;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-bottom: 2px solid transparent;
+    }
+    
+    .nav-link:hover, .nav-link.active {
+        color: white;
+        border-bottom-color: #c41a1f;
+    }
+    
+    /* Sections */
+    .section { display: none; padding-top: 65px; }
+    .section.active { display: block; }
+    
+    /* Hero */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 50%, #0f3460 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(196,26,31,0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(15,52,96,0.3) 0%, transparent 50%);
+    }
+    
+    .hero-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 4rem 3rem;
+        color: white;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .hero-badge {
+        display: inline-block;
+        border: 1px solid rgba(196,26,31,0.6);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .hero h1 {
+        font-size: 3.8rem;
+        font-weight: bold;
+        line-height: 1.15;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero h1 span { color: #e63946; }
+    
+    .hero-subtitle {
+        font-size: 1.35rem;
+        color: rgba(255,255,255,0.85);
+        margin-bottom: 2.5rem;
+        max-width: 800px;
+        font-style: italic;
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        padding: 1rem 2.2rem;
+        font-size: 1.05rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        font-family: "Times New Roman", Times, serif;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-primary {
+        background: #c41a1f;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #a01519;
+        transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 1px solid rgba(255,255,255,0.4);
+    }
+    
+    .btn-secondary:hover {
+        background: rgba(255,255,255,0.1);
+        border-color: white;
+    }
+    
+    /* Stats */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        padding: 4rem 3rem;
+        max-width: 1300px;
+        margin: 0 auto;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        border-top: 4px solid #c41a1f;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+    }
+    
+    .stat-number {
+        font-size: 2.8rem;
+        font-weight: bold;
+        color: #c41a1f;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #555;
+        font-size: 1rem;
+    }
+    
+    /* Content containers */
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 4rem 3rem;
+    }
+    
+    .container h2 {
+        font-size: 2.2rem;
+        color: #1a1a2e;
+        margin-bottom: 2rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 3px solid #c41a1f;
+    }
+    
+    .container h3 {
+        font-size: 1.5rem;
+        color: #0f3460;
+        margin: 2rem 0 1rem;
+    }
+    
+    .container p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        text-indent: 1.5rem;
+    }
+    
+    .container p:first-of-type {
+        text-indent: 0;
+    }
+    
+    .container ul, .container ol {
+        padding-left: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .container li {
+        margin-bottom: 0.6rem;
+    }
+    
+    /* Photo blocks */
+    .photo-block {
+        margin: 2.5rem 0;
+        background: white;
+        padding: 1.5rem;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    }
+    
+    .photo-frame {
+        width: 100%;
+        height: 420px;
+        background: linear-gradient(135deg, #e8e4df 0%, #d4cfc7 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+        font-size: 1.1rem;
+        font-style: italic;
+        border: 1px solid #ccc;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .photo-frame::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+            repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.03) 10px, rgba(0,0,0,0.03) 20px);
+    }
+    
+    .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .photo-caption {
+        margin-top: 1rem;
+        font-size: 0.95rem;
+        color: #555;
+        font-style: italic;
+        text-align: center;
+        border-top: 1px solid #ddd;
+        padding-top: 0.8rem;
+    }
+    
+    .photo-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .photo-grid .photo-frame {
+        height: 320px;
+    }
+    
+    /* Tables */
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 1rem;
+    }
+    
+    .data-table th {
+        background: #1a1a2e;
+        color: white;
+        padding: 0.9rem 1rem;
+        text-align: left;
+        font-weight: bold;
+    }
+    
+    .data-table td {
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .data-table tr:nth-child(even) {
+        background: #fafafa;
+    }
+    
+    .data-table tr:hover {
+        background: #f0f0f0;
+    }
+    
+    /* Highlight box */
+    .highlight {
+        background: #fafafa;
+        border-left: 4px solid #c41a1f;
+        padding: 1.2rem 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    /* TOC */
+    .toc {
+        background: white;
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        border: 1px solid #e0e0e0;
+    }
+    
+    .toc h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #c41a1f;
+        padding-bottom: 0.5rem;
+    }
+    
+    .toc-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .toc-list li {
+        padding: 0.6rem 0;
+        border-bottom: 1px dotted #ccc;
+    }
+    
+    .toc-list a {
+        color: #1a1a2e;
+        text-decoration: none;
+        font-size: 1.05rem;
+    }
+    
+    .toc-list a:hover {
+        color: #c41a1f;
+    }
+    
+    .toc-list .toc-num {
+        display: inline-block;
+        width: 2.5rem;
+        color: #c41a1f;
+        font-weight: bold;
+    }
+    
+    /* Note sections */
+    .note-section {
+        background: white;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+    }
+    
+    .note-section h2 {
+        font-size: 1.8rem;
+        color: #1a1a2e;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 3px solid #c41a1f;
+    }
+    
+    .note-section h3 {
+        font-size: 1.3rem;
+        color: #0f3460;
+        margin: 1.8rem 0 0.8rem;
+    }
+    
+    .note-section p {
+        text-indent: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: justify;
+    }
+    
+    /* Presentation */
+    .presentation {
+        background: #1a1a2e;
+        min-height: 100vh;
+        padding: 3rem 2rem;
+    }
+    
+    .slide-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    .slide {
+        display: none;
+        background: white;
+        padding: 3.5rem;
+        min-height: 600px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .slide.active { display: block; }
+    
+    .slide-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #c41a1f;
+    }
+    
+    .slide-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1a1a2e;
+    }
+    
+    .slide-number {
+        background: #c41a1f;
+        color: white;
+        padding: 0.5rem 1.2rem;
+        font-size: 1rem;
+    }
+    
+    .slide-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+    }
+    
+    .slide-btn {
+        padding: 0.8rem 1.8rem;
+        background: #c41a1f;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    
+    .slide-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    
+    .slide-dots {
+        display: flex;
+        gap: 0.6rem;
+    }
+    
+    .slide-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.3);
+        cursor: pointer;
+    }
+    
+    .slide-dot.active {
+        background: #c41a1f;
+    }
+    
+    /* Feature cards */
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .feature-card {
+        background: #fafafa;
+        padding: 1.8rem;
+        border-left: 4px solid #c41a1f;
+    }
+    
+    .feature-card h4 {
+        color: #1a1a2e;
+        margin-bottom: 0.6rem;
+        font-size: 1.15rem;
+    }
+    
+    .feature-card p {
+        color: #555;
+        font-size: 1rem;
+        text-indent: 0;
+        margin: 0;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 2.2rem; }
+        .nav-links { display: none; }
+        .container { padding: 2rem 1.5rem; }
+        .photo-grid { grid-template-columns: 1fr; }
+        .slide { padding: 2rem 1.5rem; }
+    }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-logo">
+        <div class="logo-box">МЗ</div>
+        <span>МЗ-Д4</span>
+    </div>
+    <div class="nav-links">
+        <a class="nav-link active" onclick="showSection('home', this)">Главная</a>
+        <a class="nav-link" onclick="showSection('presentation', this)">Презентация</a>
+        <a class="nav-link" onclick="showSection('explanatory', this)">Пояснительная записка</a>
+        <a class="nav-link" onclick="showSection('economics', this)">Экономика</a>
+    </div>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="section active">
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Всероссийский конкурс детских инженерных изобретений «Инженеры транспорта»</div>
+            <h1>Автономный робототехнический комплекс <span>МЗ-Д4</span></h1>
+            <p class="hero-subtitle">Интеллектуальная система для инспекции, очистки и ремонта железнодорожной инфраструктуры без остановки движения поездов</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="showSection('presentation', document.querySelectorAll('.nav-link')[1])">Презентация проекта</button>
+                <button class="btn btn-secondary" onclick="showSection('explanatory', document.querySelectorAll('.nav-link')[2])">Пояснительная записка</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">81,8%</div>
+            <div class="stat-label">Точность классификации дефектов</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">39 ч</div>
+            <div class="stat-label">Максимальная автономность</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">1,54</div>
+            <div class="stat-label">Года окупаемости</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">−43%</div>
+            <div class="stat-label">Снижение эксплуатационных затрат</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">×10</div>
+            <div class="stat-label">Снижение риска травматизма</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Ключевые возможности</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>Инспекция пути</h4>
+                <p>Автоматическое обнаружение дефектов с помощью нейросети YOLO v8 и лазерных дальномеров</p>
+            </div>
+            <div class="feature-card">
+                <h4>Уборка ТКО</h4>
+                <p>Манипулятор с клещевым захватом удаляет посторонние предметы с путей</p>
+            </div>
+            <div class="feature-card">
+                <h4>Ремонт</h4>
+                <p>Лазерная наплавка выбоин и обслуживание болтовых соединений гайковёртом</p>
+            </div>
+            <div class="feature-card">
+                <h4>Воздушная инспекция</h4>
+                <p>Встроенный дрон для обследования труднодоступных мест инфраструктуры</p>
+            </div>
+            <div class="feature-card">
+                <h4>Цифровой двойник</h4>
+                <p>Формирование 3D-карты пути и отслеживание динамики дефектов во времени</p>
+            </div>
+            <div class="feature-card">
+                <h4>Автономность</h4>
+                <p>До 39 часов работы без подзарядки, автоматический возврат на базу</p>
+            </div>
+        </div>
+
+        <div class="photo-block">
+            <div class="photo-frame">
+                <img src="1pic.png" alt="Прототип МЗ-Д4 на железнодорожных путях">
+            </div>
+            <div class="photo-caption">Рис. 1. Функциональный прототип робота МЗ-Д4 на испытательном полигоне</div>
+        </div>
+    </div>
+</section>
+
+<!-- PRESENTATION -->
+<section id="presentation" class="section">
+    <div class="presentation">
+        <div class="slide-container">
+            
+            <div class="slide active" id="slide-1">
+                <div class="slide-header">
+                    <div class="slide-title">Контекст проекта</div>
+                    <div class="slide-number">1 / 8</div>
+                </div>
+                <div class="slide-content" style="font-size:1.1rem; line-height:1.8;">
+                    <h3 style="color:#1a1a2e; margin-bottom:1rem;">Проблема</h3>
+                    <ul style="padding-left:2rem; margin-bottom:2rem;">
+                        <li>Ежедневный осмотр путей критически зависит от ручного труда — это опасно для персонала</li>
+                        <li>Человеческий фактор: усталость приводит к пропуску скрытых дефектов</li>
+                        <li>Ручной обход выявляет лишь 60–70% аномалий, занимая до 4 часов на 1 км</li>
+                        <li>Десятки травм ежегодно при выходе на путь</li>
+                    </ul>
+                    
+                    <h3 style="color:#1a1a2e; margin-bottom:1rem;">Решение</h3>
+                    <p style="text-indent:0; margin-bottom:1.5rem;"><strong>МЗ-Д4</strong> — автономный робототехнический комплекс «3 в 1», объединяющий функции инспектора, уборщика и ремонтника для обслуживания железнодорожной инфраструктуры ОАО «РЖД» без остановки движения поездов.</p>
+                    
+                    <div class="highlight">
+                        <strong>Целевая аудитория:</strong> сотрудники путевой службы ОАО «РЖД», подрядные организации, владельцы частных ж/д путей, менеджеры транспортной инфраструктуры
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-2">
+                <div class="slide-header">
+                    <div class="slide-title">Существующие решения</div>
+                    <div class="slide-number">2 / 8</div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Характеристика</th>
+                            <th>Ручной труд</th>
+                            <th>«Декарт»</th>
+                            <th>NLB-500</th>
+                            <th>МЗ-Д4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Метод контроля</td>
+                            <td>Визуальный осмотр</td>
+                            <td>Ультразвук (99,8%)</td>
+                            <td>Компьютерное зрение (97,8%)</td>
+                            <td><strong>YOLO v8 + лидары (81,8%)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Производительность</td>
+                            <td>0,5–1 км/смену</td>
+                            <td>До 1000 км/сутки</td>
+                            <td>2–3 км/сутки</td>
+                            <td><strong>15–20 км/сутки</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Задержка поездов</td>
+                            <td>Риск остановки</td>
+                            <td>0 минут</td>
+                            <td>0 минут</td>
+                            <td><strong>0 минут</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Функционал</td>
+                            <td>Только осмотр</td>
+                            <td>Только диагностика</td>
+                            <td>Только диагностика</td>
+                            <td><strong>Инспекция + уборка + ремонт</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Стоимость</td>
+                            <td>250 тыс. руб./км/год</td>
+                            <td>~180 млн руб.</td>
+                            <td>Высокая</td>
+                            <td><strong>~1,77 млн руб.</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="slide" id="slide-3">
+                <div class="slide-header">
+                    <div class="slide-title">Решение: как это работает</div>
+                    <div class="slide-number">3 / 8</div>
+                </div>
+                <h3 style="color:#1a1a2e; margin-bottom:1.5rem;">Семь ключевых функций МЗ-Д4</h3>
+                <ol style="padding-left:2rem; font-size:1.1rem; line-height:1.9;">
+                    <li><strong>Движение и навигация</strong> — двигатели 24 В 250 Вт, энкодеры, GPS, 4 камеры, камера глубины Intel RealSense D430, ультразвуковые датчики</li>
+                    <li><strong>Распознавание объектов</strong> — нейросеть YOLO v8, обученная на 2490+ изображениях, классификация в реальном времени</li>
+                    <li><strong>Уборка мусора</strong> — манипулятор с клещевым захватом, сортировка в контейнеры</li>
+                    <li><strong>Маркировка дефектов</strong> — аэрозольная сигнальная эмаль с GPS-привязкой</li>
+                    <li><strong>Обслуживание крепежа</strong> — электромеханический гайковёрт М10–М28</li>
+                    <li><strong>Лазерный ремонт</strong> — 3D-печать металлом + финишное шлифование</li>
+                    <li><strong>Воздушная инспекция</strong> — квадрокоптер DJI Mini 2 SE (до 150 г, без разрешения)</li>
+                </ol>
+                
+                <div class="photo-block" style="margin-top:2rem;">
+                    <div class="photo-frame" style="height:280px;">
+                        <img src="2pic.png" alt="Схема компонентов робота МЗ-Д4">
+                    </div>
+                    <div class="photo-caption">Рис. 2. Архитектура аппаратных компонентов комплекса</div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-4">
+                <div class="slide-header">
+                    <div class="slide-title">Результат проекта</div>
+                    <div class="slide-number">4 / 8</div>
+                </div>
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">Что создано</h3>
+                <p style="text-indent:0; margin-bottom:1.5rem;">Функциональный прототип робота МЗ-Д4 со степенью защиты IP58 и рабочим диапазоном температур от −20°C до +50°C.</p>
+                
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">Ключевые компоненты</h3>
+                <ul style="padding-left:2rem; margin-bottom:1.5rem;">
+                    <li>Arduino Uno 3 шт., Arduino Mega</li>
+                    <li>4 камеры 1080p, Raspberry Pi 4B</li>
+                    <li>Камера глубины Intel RealSense D430</li>
+                    <li>2 лидара, датчики Холла 49E</li>
+                    <li>Тяговые двигатели 24 В/250 Вт</li>
+                    <li>Дрон Geocscan с платформой</li>
+                </ul>
+                
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">Результаты тестов (18.09.2026, Малая Октябрьская ж/д)</h3>
+                <ul style="padding-left:2rem;">
+                    <li>Обнаружено 10 из 11 заложенных дефектов</li>
+                    <li>Точность классификации: 81,8%, ложных срабатываний: 0</li>
+                    <li>Среднее время реакции: 0,3 секунды на объект</li>
+                    <li>Тесты автономности подтвердили расчёты</li>
+                    <li>Успешно пройдены тесты на виброустойчивость, влагозащиту, герметичность</li>
+                </ul>
+            </div>
+
+            <div class="slide" id="slide-5">
+                <div class="slide-header">
+                    <div class="slide-title">Преимущества решения</div>
+                    <div class="slide-number">5 / 8</div>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>1. Безопасность персонала</h4>
+                        <p>Полное исключение человека из опасной зоны. Дистанционное управление, автоматический съезд с пути.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>2. Нулевая задержка поездов</h4>
+                        <p>Компактное устройство, автоматический съезд с пути. Резервная АКБ обеспечивает 12–14 часов ожидания.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>3. Комплексность «3 в 1»</h4>
+                        <p>Инспектор + уборщик + ремонтник в одном устройстве</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>4. Энергоэффективность</h4>
+                        <p>Гибридное питание: до 39 часов работы (АКБ + солнце + резерв)</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>5. Цифровой двойник</h4>
+                        <p>3D-карта местности, отслеживание развития дефектов</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>6. Экономическая эффективность</h4>
+                        <p>В 100 раз дешевле «Декарта», в 140 раз дешевле ручного труда</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-6">
+                <div class="slide-header">
+                    <div class="slide-title">Экономика проекта</div>
+                    <div class="slide-number">6 / 8</div>
+                </div>
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">Инвестиции (CAPEX): 4 988 223 руб.</h3>
+                <ul style="padding-left:2rem; margin-bottom:1.5rem;">
+                    <li>Прототип робота: 505 923 руб.</li>
+                    <li>Оборудование мастерской: 591 500 руб.</li>
+                    <li>Помещение и ремонт: 325 000 руб.</li>
+                    <li>Внедрение и сертификация: 3 500 000 руб.</li>
+                </ul>
+                
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">Экономический эффект (участок 15 км)</h3>
+                <table class="data-table">
+                    <tr><td>Затраты ДО внедрения</td><td><strong>7 470 000 руб./год</strong></td></tr>
+                    <tr><td>Затраты ПОСЛЕ внедрения</td><td><strong>4 224 645 руб./год</strong></td></tr>
+                    <tr><td>Чистая экономия</td><td><strong style="color:#2d7d2d;">3 245 355 руб./год (−43%)</strong></td></tr>
+                    <tr><td>Срок окупаемости</td><td><strong>1,54 года (~18,5 мес.)</strong></td></tr>
+                    <tr><td>ROI за 5 лет</td><td><strong style="color:#2d7d2d;">326%</strong></td></tr>
+                </table>
+            </div>
+
+            <div class="slide" id="slide-7">
+                <div class="slide-header">
+                    <div class="slide-title">Команда и реализация</div>
+                    <div class="slide-number">7 / 8</div>
+                </div>
+                <div class="photo-block">
+                    <div class="photo-grid">
+                        <div class="photo-frame">
+                            <img src="3pic.jpg" alt="Команда за работой">
+                        </div>
+                        <div class="photo-frame">
+                            <img src="pic4.jpg" alt="Испытания на путях">
+                        </div>
+                    </div>
+                    <div class="photo-caption">Рис. 3–4. Работа команды ЕЯЭК над проектом МЗ-Д4</div>
+                </div>
+                
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">Состав команды</h3>
+                <ul style="padding-left:2rem; font-size:1.1rem;">
+                    <li>Голуб Егор Алексеевич</li>
+                    <li>Куклов Михаил Евгеньевич</li>
+                    <li>Пахоменков Павел Константинович</li>
+                    <li>Раду Иван Александрович</li>
+                </ul>
+                <p style="text-indent:0; margin-top:1rem;"><strong>Наставник:</strong> Рузаков Максим Андреевич<br>
+                <strong>Организация:</strong> ГБУДО «ЦРТ» Кванториум, Санкт-Петербург</p>
+            </div>
+
+            <div class="slide" id="slide-8">
+                <div class="slide-header">
+                    <div class="slide-title">Планы развития</div>
+                    <div class="slide-number">8 / 8</div>
+                </div>
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">На ближайшие 6–12 месяцев</h3>
+                <ul style="padding-left:2rem; margin-bottom:1.5rem;">
+                    <li>Расширение датасета для нейросети до 10 000+ изображений (точность 95%+)</li>
+                    <li>Доработка и облегчение модуля лазерной наплавки</li>
+                    <li>Проведение расширенных зимних испытаний при −20°C</li>
+                </ul>
+                
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">На 1–3 года</h3>
+                <ul style="padding-left:2rem; margin-bottom:1.5rem;">
+                    <li>Интеграция с центральной системой «Цифровой двойник» ОАО «РЖД»</li>
+                    <li>Внедрение предиктивной аналитики</li>
+                    <li>Подготовка к серийному производству</li>
+                    <li>Пилотные испытания на реальном участке инфраструктуры РЖД</li>
+                </ul>
+                
+                <h3 style="color:#1a1a2e; margin-bottom:1rem;">Модель коммерциализации</h3>
+                <ul style="padding-left:2rem;">
+                    <li>Прямая продажа робототехнических комплексов</li>
+                    <li>Модель «Робот как услуга» (RaaS) — оплата за каждый обслуженный километр</li>
+                </ul>
+                
+                <div class="highlight" style="margin-top:2rem; text-align:center;">
+                    <strong>Спасибо за внимание!</strong><br>
+                    Команда ЕЯЭК | ГБУДО «ЦРТ» Кванториум | Санкт-Петербург
+                </div>
+            </div>
+
+            <div class="slide-nav">
+                <button class="slide-btn" id="prevBtn" onclick="changeSlide(-1)">Назад</button>
+                <div class="slide-dots" id="slideDots"></div>
+                <button class="slide-btn" id="nextBtn" onclick="changeSlide(1)">Вперёд</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EXPLANATORY NOTE -->
+<section id="explanatory" class="section">
+    <div class="container">
+        <h1 style="font-size:2.8rem; color:#1a1a2e; margin-bottom:1rem; text-align:center; border:none;">Пояснительная записка</h1>
+        <p style="text-align:center; color:#555; font-size:1.15rem; font-style:italic; margin-bottom:3rem; text-indent:0;">к проекту автономного робототехнического комплекса МЗ-Д4 для автоматизированной инспекции, очистки и ремонта железнодорожной инфраструктуры</p>
+        
+        <div class="toc">
+            <h2>Оглавление</h2>
+            <ul class="toc-list">
+                <li><span class="toc-num">1.</span><a href="#note-1">Описание предлагаемого решения и его назначение</a></li>
+                <li><span class="toc-num">2.</span><a href="#note-2">Актуальность и проблематика</a></li>
+                <li><span class="toc-num">3.</span><a href="#note-3">Анализ существующих решений</a></li>
+                <li><span class="toc-num">4.</span><a href="#note-4">Функциональные возможности</a></li>
+                <li><span class="toc-num">5.</span><a href="#note-5">Технические характеристики</a></li>
+                <li><span class="toc-num">6.</span><a href="#note-6">Конструкция и компоненты</a></li>
+                <li><span class="toc-num">7.</span><a href="#note-7">Программное обеспечение</a></li>
+                <li><span class="toc-num">8.</span><a href="#note-8">Результаты контрольных тестов</a></li>
+                <li><span class="toc-num">9.</span><a href="#note-9">Экономика проекта</a></li>
+                <li><span class="toc-num">10.</span><a href="#note-10">Безопасность</a></li>
+                <li><span class="toc-num">11.</span><a href="#note-11">Планы развития проекта</a></li>
+                <li><span class="toc-num">12.</span><a href="#note-12">Заключение</a></li>
+            </ul>
+        </div>
+
+        <div id="note-1" class="note-section">
+            <h2>1. Описание предлагаемого решения и его назначение</h2>
+            <p>Робототехнический комплекс МЗ-Д4 предназначен для автоматизации процессов осмотра, диагностики и обслуживания объектов железнодорожной инфраструктуры ОАО «РЖД», включая элементы верхнего строения пути (рельсы, шпалы, скрепления), инженерные сооружения (мосты, тоннели, опорные конструкции), подвижной состав (грузовые и пассажирские вагоны, локомотивы), а также труднодоступные и опасные для человека места.</p>
+            <p>Устройство работает на перегонах, станциях и в депо в режиме круглосуточной эксплуатации, выполняя автоматическую диагностику пути и обнаружение дефектов, уборку посторонних предметов и твёрдых коммунальных отходов, маркировку дефектных участков, обслуживание болтовых соединений, лазерный ремонт выбоин методом трёхмерной печати металлом, а также воздушную инспекцию труднодоступных объектов с помощью встроенного дрона.</p>
+            
+            <h3>1.1. Цель разработки</h3>
+            <p>Минимизация участия человека в процессах осмотра и обслуживания железнодорожной инфраструктуры, повышение безопасности персонала, объективности контроля и регулярности диагностики при одновременном снижении эксплуатационных расходов.</p>
+            
+            <h3>1.2. Целевая аудитория</h3>
+            <ul>
+                <li>Сотрудники путевой службы и путевые обходчики ОАО «РЖД» (дистанции пути ПЧ, путевые машинные станции ПМС);</li>
+                <li>Подрядные организации, обслуживающие железнодорожную инфраструктуру;</li>
+                <li>Владельцы частных железнодорожных путей (порты, горно-обогатительные комбинаты, промышленные подъездные пути);</li>
+                <li>Менеджеры и инженеры транспортной и логистической инфраструктуры;</li>
+                <li>Пассажиры и грузоотправители (через повышение общей безопасности движения).</li>
+            </ul>
+        </div>
+
+        <div id="note-2" class="note-section">
+            <h2>2. Актуальность и проблематика</h2>
+            <p>Ежедневный осмотр железнодорожных путей критически зависит от ручного труда, что сопряжено с рядом серьёзных проблем.</p>
+            
+            <table class="data-table">
+                <tr><th>Проблема</th><th>Последствия</th></tr>
+                <tr><td>Опасность для персонала</td><td>Десятки травм и гибелей ежегодно при выходе на путь</td></tr>
+                <tr><td>Человеческий фактор</td><td>Усталость приводит к пропуску 30–40% скрытых дефектов</td></tr>
+                <tr><td>Трудоёмкость</td><td>До 4 часов на 1 км пути при ручном обходе</td></tr>
+                <tr><td>Задержки поездов</td><td>Необходимость замедления или остановки движения при работах</td></tr>
+                <tr><td>Высокие затраты</td><td>250 000 руб./год на обслуживание 1 км пути ручным трудом</td></tr>
+            </table>
+            
+            <h3>2.1. Обстоятельства использования</h3>
+            <p>Робот МЗ-Д4 работает непосредственно в процессе непрерывного движения поездов, на перегонных участках, станциях и в депо, в температурном диапазоне от −20°C до +50°C, при влажности до 90% и запылённости средней интенсивности.</p>
+            
+            <h3>2.2. Значимость решения</h3>
+            <ul>
+                <li><strong>Безопасность персонала:</strong> комплекс полностью исключает человека из опасных зон и сводит к нулю производственный травматизм.</li>
+                <li><strong>Непрерывный контроль:</strong> устройство работает круглосуточно без остановки движения и закрытия перегонов.</li>
+                <li><strong>Цифровой двойник:</strong> система непрерывно формирует цифровую модель пути для раннего выявления дефектов и экономии ресурсов ОАО «РЖД».</li>
+                <li><strong>Переход к проактивному обслуживанию:</strong> от реактивного (после поломки) и ручного контроля — к автономному и превентивному.</li>
+            </ul>
+        </div>
+
+        <div id="note-3" class="note-section">
+            <h2>3. Анализ существующих решений</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Характеристика</th>
+                        <th>Ручной труд</th>
+                        <th>«Декарт»</th>
+                        <th>NLB-500</th>
+                        <th>МЗ-Д4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Метод контроля</td>
+                        <td>Визуальный осмотр</td>
+                        <td>Ультразвук (99,8%)</td>
+                        <td>Компьютерное зрение (97,8%)</td>
+                        <td><strong>YOLO v8 + лидары (81,8%)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Геопозиция</td>
+                        <td>Ручная запись</td>
+                        <td>GPS/GLONASS</td>
+                        <td>GPS-метки</td>
+                        <td><strong>GPS/ГЛОНАСС + энкодеры</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Производительность</td>
+                        <td>0,5–1 км/смену</td>
+                        <td>До 1000 км/сутки</td>
+                        <td>2–3 км/сутки</td>
+                        <td><strong>15–20 км/сутки</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Задержка поездов</td>
+                        <td>Риск</td>
+                        <td>0 минут</td>
+                        <td>0 минут</td>
+                        <td><strong>0 минут</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Функционал</td>
+                        <td>Только осмотр</td>
+                        <td>Только диагностика</td>
+                        <td>Только диагностика</td>
+                        <td><strong>Инспекция + уборка + ремонт</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Стоимость</td>
+                        <td>250 тыс./км/год</td>
+                        <td>~180 млн руб.</td>
+                        <td>Высокая</td>
+                        <td><strong>~1,77 млн руб.</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="highlight">
+                <strong>Вывод.</strong> Существующие решения либо выполняют только одну функцию, либо требуют значительных капиталовложений, либо не обеспечивают полной автономности. МЗ-Д4 — единственный комплекс, объединяющий все ключевые функции при доступной стоимости.
+            </div>
+        </div>
+
+        <div id="note-4" class="note-section">
+            <h2>4. Функциональные возможности</h2>
+            
+            <h3>4.1. Диагностика и обнаружение дефектов</h3>
+            <ul>
+                <li>Автоматическое обнаружение визуальных дефектов (трещины, износ, деформации рельсов);</li>
+                <li>Выявление посторонних предметов и ТКО на путях;</li>
+                <li>Контроль ширины железнодорожной колеи;</li>
+                <li>Классификация дефектов по типу, размеру и степени опасности;</li>
+                <li>Лазерное профилирование рельсовой нитки для выявления отсутствия стыковых болтов, стыкового зазора более 35 мм, перекоса или просадки пути более 12 мм.</li>
+            </ul>
+            
+            <h3>4.2. Позиционирование и фиксация</h3>
+            <ul>
+                <li>Автоматическая фиксация выявленных дефектов с привязкой к географическим координатам (GPS/ГЛОНАСС, точность до 2 м);</li>
+                <li>Формирование отчётов с фото- и видеофиксацией и координатами;</li>
+                <li>Ведение базы данных истории обследований и динамики изменений состояния инфраструктуры;</li>
+                <li>Формирование «цифрового двойника» участка пути.</li>
+            </ul>
+            
+            <h3>4.3. Мониторинг состояния и повторное обследование</h3>
+            <ul>
+                <li>Возможность повторных измерений одного и того же участка по сохранённым координатам;</li>
+                <li>Автоматическое сопоставление данных текущего и предыдущих проходов;</li>
+                <li>Выявление новых дефектов и динамики развития существующих;</li>
+                <li>Генерация дельта-отчётов с визуальным сравнением снимков «до» и «после».</li>
+            </ul>
+            
+            <h3>4.4. Сервисные и ремонтные операции</h3>
+            <ul>
+                <li><strong>Сбор ТКО:</strong> клещевой захват манипулятора обеспечивает удаление посторонних предметов;</li>
+                <li><strong>Маркировка дефектов:</strong> аэрозольное нанесение сигнальной эмали на головку рельса;</li>
+                <li><strong>Обслуживание резьбовых соединений:</strong> восстановление крутящего момента болтовых соединений электромеханическим гайковёртом (М10–М28);</li>
+                <li><strong>Ремонт дефектов пути:</strong> лазерная наплавка (трёхмерная печать металлом) для устранения выбоин.</li>
+            </ul>
+            
+            <h3>4.5. Инспекция труднодоступных мест</h3>
+            <ul>
+                <li>Автономный вылет квадрокоптера (массой до 150 г, не требует разрешения) из отсека под крышей робота;</li>
+                <li>Обследование опор контактной сети, мостовых конструкций и других объектов инфраструктуры.</li>
+            </ul>
+            
+            <h3>4.6. Автономная работа</h3>
+            <ul>
+                <li>Движение по заранее заданному маршруту с использованием ИИ-навигации;</li>
+                <li>Автоматический возврат на базу при низком заряде АКБ (менее 15%);</li>
+                <li>Уход в безопасную зону при потере связи;</li>
+                <li>Возможность ручного управления через защищённый радиоканал (Wi-Fi/LTE);</li>
+                <li>Автоматический съезд с пути при приближении поезда.</li>
+            </ul>
+        </div>
+
+        <div id="note-5" class="note-section">
+            <h2>5. Технические характеристики</h2>
+            
+            <h3>5.1. Общие параметры</h3>
+            <table class="data-table">
+                <tr><td>Тип устройства</td><td>Комбинированный (наземный робот + воздушный модуль)</td></tr>
+                <tr><td>Способ движения</td><td>Колёсный по рельсам с системой аварийного съезда</td></tr>
+                <tr><td>Рабочая скорость</td><td>4,5–5 км/ч</td></tr>
+                <tr><td>Производительность</td><td>15–20 км путей/сутки</td></tr>
+                <tr><td>Рабочая температура</td><td>от −20°C до +50°C</td></tr>
+                <tr><td>Степень защиты корпуса</td><td>IP58</td></tr>
+            </table>
+            
+            <h3>5.2. Система энергообеспечения</h3>
+            <table class="data-table">
+                <tr><td>Основная АКБ</td><td>Li-ion, 60 В, 28 А·ч (537,6 Вт·ч)</td></tr>
+                <tr><td>Резервная АКБ</td><td>Li-ion, 24 В, 30 А·ч</td></tr>
+                <tr><td>Солнечные панели</td><td>Пиковая мощность 128 Вт, выработка до 512 Вт·ч/сутки</td></tr>
+                <tr><td>Автономность — только основная АКБ</td><td>10 ч 45 мин</td></tr>
+                <tr><td>Автономность — основная АКБ + солнце</td><td>21 ч 00 мин</td></tr>
+                <tr><td>Автономность — основная + резервная + солнце</td><td>39 ч 09 мин</td></tr>
+            </table>
+            
+            <h3>5.3. Система управления</h3>
+            <table class="data-table">
+                <tr><td>Основной процессор</td><td>Raspberry Pi 4 (4 ГБ)</td></tr>
+                <tr><td>Микроконтроллеры</td><td>STM32F407VET6 × 2, Arduino Uno × 3, Arduino Mega × 1</td></tr>
+                <tr><td>Память</td><td>microSD 128 ГБ</td></tr>
+                <tr><td>Номинальный ток</td><td>15 А, пиковый ток: 25 А</td></tr>
+            </table>
+            
+            <h3>5.4. Система технического зрения</h3>
+            <table class="data-table">
+                <tr><th>Компонент</th><th>Количество</th><th>Назначение</th></tr>
+                <tr><td>Веб-камеры USB 1080p</td><td>4 шт.</td><td>Детектирование дефектов</td></tr>
+                <tr><td>Камера глубины Intel RealSense D430</td><td>1 шт.</td><td>Контроль зоны перед роботом</td></tr>
+                <tr><td>Лидары</td><td>2 шт.</td><td>Лазерное профилирование</td></tr>
+                <tr><td>Ультразвуковые датчики HC-SR04</td><td>6 шт.</td><td>Измерение ширины колеи</td></tr>
+            </table>
+            
+            <h3>5.5. Нейросеть распознавания</h3>
+            <table class="data-table">
+                <tr><td>Платформа</td><td>YOLO v8 (обучение на Roboflow)</td></tr>
+                <tr><td>Объём датасета</td><td>2490+ изображений</td></tr>
+                <tr><td>Категории</td><td>Посторонние предметы/ТКО и конструктивные дефекты</td></tr>
+                <tr><td>Точность</td><td>81,8% (текущая), цель — 95%+</td></tr>
+                <tr><td>Ложных срабатываний</td><td>0</td></tr>
+                <tr><td>Среднее время реакции</td><td>0,3 секунды на объект</td></tr>
+            </table>
+            
+            <h3>5.6. Система связи</h3>
+            <table class="data-table">
+                <tr><th>Тип связи</th><th>Стандарт</th><th>Назначение</th></tr>
+                <tr><td>Wi-Fi</td><td>802.11 b/g/n</td><td>до 100 м</td></tr>
+                <tr><td>LTE</td><td>Cat.4</td><td>покрытие оператора</td></tr>
+                <tr><td>FRMCS/LTE-R</td><td>железнодорожный стандарт</td><td>надёжная связь в инфраструктуре РЖД</td></tr>
+                <tr><td>Bluetooth</td><td>4.2</td><td>локальная настройка</td></tr>
+            </table>
+            <p style="text-indent:0;">Передача телеметрии: каждые 30 сек (в движении), каждые 3 мин (на стоянке).</p>
+        </div>
+
+        <div id="note-6" class="note-section">
+            <h2>6. Конструкция и компоненты</h2>
+            
+            <div class="photo-block">
+                <div class="photo-frame" style="height:380px;">
+                    <img src="pic5.jpg" alt="3D-модель корпуса робота МЗ-Д4">
+                </div>
+                <div class="photo-caption">Рис. 5. Трёхмерная модель корпуса робота на железнодорожных путях</div>
+            </div>
+            
+            <h3>6.1. Архитектура системы</h3>
+            <p>Робот построен по модульному принципу:</p>
+            <ol>
+                <li><strong>Ходовой модуль</strong> — раздвижная колёсная база, тяговые двигатели, энкодеры, аварийные колёса.</li>
+                <li><strong>Модуль энергообеспечения</strong> — основная и резервная АКБ, солнечные панели, контроллер заряда MPPT, BMS.</li>
+                <li><strong>Модуль управления</strong> — Raspberry Pi 4, STM32, Arduino.</li>
+                <li><strong>Модуль технического зрения</strong> — 4 веб-камеры, камера глубины, 2 лидара, ультразвуковые датчики.</li>
+                <li><strong>Инструментальный модуль</strong> — манипулятор, гайковёрт, лазерный модуль наплавки, фрезерный шпиндель.</li>
+                <li><strong>Модуль хранения</strong> — контейнеры для ТКО (20 л и 10 л).</li>
+                <li><strong>Воздушный модуль</strong> — отсек с квадрокоптером DJI Mini 2 SE.</li>
+                <li><strong>Модуль связи</strong> — Wi-Fi, LTE Cat.4, FRMCS/LTE-R, Bluetooth.</li>
+                <li><strong>Корпус</strong> — алюминиевый 600×400×300 мм (IP65).</li>
+            </ol>
+            
+            <h3>6.2. Стоимость прототипа</h3>
+            <p>Полная спецификация комплектующих включает 100 позиций. Итоговая стоимость комплектующих: <strong>419 930 руб.</strong> С учётом доставки, таможенных пошлин и резервного фонда 10% — <strong>505 923 руб.</strong></p>
+        </div>
+
+        <div id="note-7" class="note-section">
+            <h2>7. Программное обеспечение</h2>
+            
+            <h3>7.1. Стек технологий</h3>
+            <ul>
+                <li><strong>Нейросеть:</strong> YOLO v8 для распознавания объектов (обучение на платформе Roboflow);</li>
+                <li><strong>Операционная система робота:</strong> ROS (Robot Operating System);</li>
+                <li><strong>Язык программирования:</strong> Python;</li>
+                <li><strong>SDK:</strong> Intel RealSense SDK для калибровки камеры глубины;</li>
+                <li><strong>Веб-интерфейс:</strong> интерактивная карта с маркерами дефектов, плеер видеопотока, модуль архива;</li>
+                <li><strong>Облачный хостинг:</strong> хранение данных, цифровой двойник инфраструктуры.</li>
+            </ul>
+            
+            <h3>7.2. Функционал веб-интерфейса</h3>
+            <ul>
+                <li>Интерактивная карта с маркерами дефектов (тип, размер, координаты);</li>
+                <li>Прямой видеопоток с бортовых камер;</li>
+                <li>Архив всех обследований с возможностью просмотра истории поездок;</li>
+                <li>Функция повторного обследования участка по сохранённым координатам;</li>
+                <li>Сравнение «Было / Стало» с генерацией дельта-отчётов;</li>
+                <li>Физические кнопки на панели управления для мгновенного вызова архива или очистки базы данных.</li>
+            </ul>
+        </div>
+
+        <div id="note-8" class="note-section">
+            <h2>8. Результаты контрольных тестов</h2>
+            
+            <div class="photo-block">
+                <div class="photo-frame" style="height:350px;">
+                    <img src="pic6.jpg" alt="Испытания на Малой Октябрьской ж/д">
+                </div>
+                <div class="photo-caption">Рис. 6. Контрольные испытания прототипа на полигоне Малой Октябрьской железной дороги</div>
+            </div>
+            
+            <h3>8.1. Тестирование обнаружения дефектов</h3>
+            <p><strong>Дата:</strong> 18.09.2026. <strong>Место:</strong> Малая Октябрьская детская железная дорога.</p>
+            <p><strong>Заложенные дефекты (11 шт.):</strong> 4 трещины на рельсе, 2 трещины на шпале, 1 отсутствие болта, 2 из 3 вмятин, 1 неровность, 1 износ (не определён из-за освещения).</p>
+            
+            <table class="data-table">
+                <tr><td>Обнаружено дефектов</td><td><strong>10 из 11</strong></td></tr>
+                <tr><td>Правильно классифицировано</td><td><strong>10</strong></td></tr>
+                <tr><td>Ложных срабатываний</td><td><strong>0</strong></td></tr>
+                <tr><td>Точность классификации</td><td><strong>81,8%</strong></td></tr>
+                <tr><td>Среднее время реакции</td><td><strong>0,3 сек/объект</strong></td></tr>
+            </table>
+            
+            <h3>8.2. Тестирование автономности</h3>
+            <table class="data-table">
+                <tr><th>Режим работы</th><th>Расчётное время</th><th>Фактическое время</th></tr>
+                <tr><td>Только основная АКБ</td><td>10 ч 45 мин</td><td>10 ч 38 мин</td></tr>
+                <tr><td>Основная АКБ + солнце</td><td>21 ч 00 мин</td><td>20 ч 45 мин</td></tr>
+                <tr><td>Основная + резервная + солнце</td><td>39 ч 09 мин</td><td>38 ч 50 мин</td></tr>
+            </table>
+            
+            <h3>8.3. Тестирование в условиях, приближённых к реальным</h3>
+            <table class="data-table">
+                <tr><th>Параметр</th><th>Результат</th></tr>
+                <tr><td>Проходимость</td><td>Преодоление неровностей без сбоев</td></tr>
+                <tr><td>Герметичность</td><td>IP58 подтверждена</td></tr>
+                <tr><td>Термостабильность</td><td>Работа в диапазоне температур</td></tr>
+                <tr><td>Устойчивость к вибрации</td><td>Без повреждений электроники</td></tr>
+            </table>
+        </div>
+
+        <div id="note-9" class="note-section">
+            <h2>9. Экономика проекта</h2>
+            
+            <h3>9.1. Инвестиции (CAPEX)</h3>
+            <table class="data-table">
+                <tr><th>Статья расходов</th><th>Сумма</th></tr>
+                <tr><td>Прототип робота МЗ-Д4</td><td>505 923 руб.</td></tr>
+                <tr><td>Оборудование мастерской</td><td>591 500 руб.</td></tr>
+                <tr><td>Помещение и ремонт</td><td>325 000 руб.</td></tr>
+                <tr><td>Юридическое оформление</td><td>65 800 руб.</td></tr>
+                <tr><td>Внедрение и сертификация</td><td>3 500 000 руб.</td></tr>
+                <tr><td><strong>ИТОГО CAPEX</strong></td><td><strong>4 988 223 руб.</strong></td></tr>
+            </table>
+            
+            <h3>9.2. Ежегодные затраты (OPEX)</h3>
+            <table class="data-table">
+                <tr><th>Статья расходов</th><th>Сумма</th></tr>
+                <tr><td>Разработка (1-й год)</td><td>5 118 000 руб./год</td></tr>
+                <tr><td>Эксплуатация (со 2-го года)</td><td>3 959 645 руб./год</td></tr>
+            </table>
+            
+            <h3>9.3. Экономический эффект (участок 15 км)</h3>
+            <table class="data-table">
+                <tr><th>Показатель</th><th>ДО внедрения</th><th>ПОСЛЕ внедрения</th><th>Изменение</th></tr>
+                <tr><td>Персонал</td><td>8 чел.</td><td>2 чел.</td><td><strong>−75%</strong></td></tr>
+                <tr><td>Затраты на персонал</td><td>6 240 000 руб./год</td><td>2 184 000 руб./год</td><td><strong>−4 056 000 руб.</strong></td></tr>
+                <tr><td>Материалы и оборудование</td><td>470 000 руб./год</td><td>376 000 руб./год</td><td><strong>−94 000 руб.</strong></td></tr>
+                <tr><td>Обслуживание</td><td>0 руб./год</td><td>1 239 645 руб./год</td><td>+1 239 645 руб.</td></tr>
+                <tr><td>Прочие затраты</td><td>760 000 руб./год</td><td>425 000 руб./год</td><td><strong>−335 000 руб.</strong></td></tr>
+                <tr><td><strong>ИТОГО ЗАТРАТЫ В ГОД</strong></td><td><strong>7 470 000 руб.</strong></td><td><strong>4 224 645 руб.</strong></td><td><strong style="color:#2d7d2d;">−3 245 355 руб.</strong></td></tr>
+            </table>
+            
+            <h3>9.4. Показатели эффективности</h3>
+            <table class="data-table">
+                <tr><th>Показатель</th><th>Значение</th></tr>
+                <tr><td>Чистая экономия в год</td><td><strong>3 245 355 руб. (−43%)</strong></td></tr>
+                <tr><td>Срок окупаемости</td><td><strong>1,54 года (~18,5 месяцев)</strong></td></tr>
+                <tr><td>ROI за 3 года</td><td><strong>195%</strong></td></tr>
+                <tr><td>ROI за 5 лет</td><td><strong>326%</strong></td></tr>
+                <tr><td>Стоимость обслуживания 1 км пути</td><td>250 000 → 27 050 руб./год <strong>(−89%)</strong></td></tr>
+                <tr><td>Время уборки 15 км</td><td>16 ч → 6 ч <strong>(↓ в 2,7 раза)</strong></td></tr>
+                <tr><td>Простой путей</td><td>72 ч/год → 24 ч/год <strong>(↓67%)</strong></td></tr>
+                <tr><td>Риск травматизма</td><td>5% → 0,5% <strong>(↓ в 10 раз)</strong></td></tr>
+                <tr><td>Качество уборки</td><td>75% → 95% <strong>(↑20%)</strong></td></tr>
+            </table>
+        </div>
+
+        <div id="note-10" class="note-section">
+            <h2>10. Безопасность</h2>
+            
+            <h3>10.1. Безопасность персонала</h3>
+            <ul>
+                <li>Полное исключение человека из опасной зоны железнодорожных путей;</li>
+                <li>Дистанционное управление через Wi-Fi/LTE;</li>
+                <li>Автоматический съезд с пути на колёсной аварийной платформе при приближении поезда;</li>
+                <li>Аварийные кнопки «грибок» на корпусе робота;</li>
+                <li>Зуммер аварийного сигнала.</li>
+            </ul>
+            
+            <h3>10.2. Техническая безопасность</h3>
+            <ul>
+                <li>Степень защиты IP58 (пыле- и влагозащита);</li>
+                <li>Предохранители и твердотельные реле в силовых цепях;</li>
+                <li>Контроль температуры компонентов (DS18B20);</li>
+                <li>Контроль тока и напряжения АКБ (ACS712, INA219);</li>
+                <li>BMS с балансировкой для обеих АКБ;</li>
+                <li>Автоматический переход в безопасный режим при потере связи или критическом уровне заряда.</li>
+            </ul>
+        </div>
+
+        <div id="note-11" class="note-section">
+            <h2>11. Планы развития проекта</h2>
+            
+            <h3>11.1. На ближайшие 6–12 месяцев</h3>
+            <ul>
+                <li>Расширение датасета для нейросети YOLO v8 до 10 000+ изображений для повышения точности до 95%+;</li>
+                <li>Доработка и облегчение модуля лазерной наплавки;</li>
+                <li>Проведение расширенных зимних испытаний при −20°C;</li>
+                <li>Оптимизация алгоритмов сравнения «Было / Стало».</li>
+            </ul>
+            
+            <h3>11.2. На 1–3 года</h3>
+            <ul>
+                <li>Интеграция с центральной системой «Цифровой двойник» ОАО «РЖД»;</li>
+                <li>Внедрение предиктивной аналитики (прогнозирование момента, когда дефект станет критическим);</li>
+                <li>Экспертная поддержка в области промышленного дизайна для подготовки к серийному производству;</li>
+                <li>Полноценные пилотные испытания на реальном участке инфраструктуры ОАО «РЖД»;</li>
+                <li>Поиск грантовой поддержки или инвестиций для масштабирования мастерской и закупки комплектующих для партии из 5 роботов.</li>
+            </ul>
+            
+            <h3>11.3. Модель коммерциализации</h3>
+            <ul>
+                <li>Прямая продажа робототехнических комплексов;</li>
+                <li>Модель «Робот как услуга» (RaaS) — оплата за каждый обслуженный километр пути, включающая техподдержку и обновление ПО.</li>
+            </ul>
+        </div>
+
+        <div id="note-12" class="note-section">
+            <h2>12. Заключение</h2>
+            <p>Автономный робототехнический комплекс МЗ-Д4 представляет собой завершённое инженерное решение для автоматизации диагностики, очистки и ремонта железнодорожной инфраструктуры ОАО «РЖД».</p>
+            
+            <h3>Ключевые достижения проекта</h3>
+            <ol>
+                <li><strong>Создан функциональный прототип</strong>, успешно прошедший испытания на Малой Октябрьской ж/д (18.09.2026).</li>
+                <li><strong>Реализована концепция «3 в 1»</strong>: инспектор + уборщик + ремонтник в одном компактном устройстве.</li>
+                <li><strong>Достигнута высокая автономность</strong>: робот способен работать до 39 часов без подзарядки, самостоятельно возвращаться на базу и съезжать с пути при приближении поезда.</li>
+                <li><strong>Обеспечена экономическая эффективность</strong>: стоимость прототипа (~1,77 млн руб.) в 100 раз дешевле аналога «Декарт» (180 млн руб.), срок окупаемости — 1,54 года, ROI за 5 лет — 326%.</li>
+                <li><strong>Решена проблема безопасности</strong>: полное исключение человека из опасной зоны, снижение риска травматизма в 10 раз.</li>
+                <li><strong>Создан цифровой двойник пути</strong>: система непрерывно формирует трёхмерную карту местности и отслеживает развитие дефектов во времени.</li>
+            </ol>
+            
+            <div class="highlight">
+                Проект МЗ-Д4 соответствует стратегическим целям цифровой трансформации ОАО «РЖД» и готов к масштабированию после проведения полноценных пилотных испытаний на реальном участке инфраструктуры.
+            </div>
+            
+            <p style="margin-top:2rem;"><strong>Приложения:</strong></p>
+            <ol>
+                <li>Спецификация комплектующих (100 позиций);</li>
+                <li>Расчёт CAPEX и OPEX;</li>
+                <li>Фотографии прототипа;</li>
+                <li>Результаты тестирования (18.09.2026);</li>
+                <li>Схема архитектуры системы;</li>
+                <li>Скриншоты веб-интерфейса.</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- ECONOMICS -->
+<section id="economics" class="section">
+    <div class="container">
+        <h1 style="font-size:2.8rem; color:#1a1a2e; margin-bottom:3rem; text-align:center; border:none;">Экономика проекта</h1>
+        
+        <div class="note-section">
+            <h2>Структура затрат (CAPEX + OPEX)</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Категория</th>
+                        <th>Сумма</th>
+                        <th>Обоснование</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3" style="background:#f0f0f0; font-weight:bold;">CAPEX (разовые)</td></tr>
+                    <tr><td>Прототип робота МЗ-Д4</td><td>505 923 руб.</td><td>Комплектующие + доставка + резерв 10%</td></tr>
+                    <tr><td>Оборудование мастерской</td><td>591 500 руб.</td><td>Токарный станок, 3D-принтер, сварка, инструмент</td></tr>
+                    <tr><td>Помещение и ремонт</td><td>325 000 руб.</td><td>Аренда, электрика 380 В, вентиляция</td></tr>
+                    <tr><td>Юридическое оформление</td><td>65 800 руб.</td><td>ИП, товарный знак, ЭДО с РЖД</td></tr>
+                    <tr><td>Внедрение и сертификация</td><td>3 500 000 руб.</td><td>Сертификация РЖД, испытания, пилот, интеграция</td></tr>
+                    <tr><td><strong>ИТОГО CAPEX</strong></td><td><strong>4 988 223 руб.</strong></td><td></td></tr>
+                    <tr><td colspan="3" style="background:#f0f0f0; font-weight:bold;">OPEX (ежегодные)</td></tr>
+                    <tr><td>Разработка (1-й год)</td><td>5 118 000 руб./год</td><td>Персонал (3 чел.), аренда, обслуживание оборудования</td></tr>
+                    <tr><td>Эксплуатация (со 2-го года)</td><td>3 959 645 руб./год</td><td>Персонал (2 чел.), ТО робота, амортизация, связь</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="note-section">
+            <h2>Сравнение ДО и ПОСЛЕ внедрения (участок 15 км)</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Показатель</th>
+                        <th>ДО (ручной труд, 8 чел.)</th>
+                        <th>ПОСЛЕ (робот + 2 чел.)</th>
+                        <th>Изменение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Затраты на персонал</td><td>6 240 000 руб./год</td><td>2 184 000 руб./год</td><td><strong style="color:#2d7d2d;">−4 056 000 руб.</strong></td></tr>
+                    <tr><td>Материалы и оборудование</td><td>470 000 руб./год</td><td>376 000 руб./год</td><td><strong style="color:#2d7d2d;">−94 000 руб.</strong></td></tr>
+                    <tr><td>Обслуживание</td><td>0 руб./год</td><td>1 239 645 руб./год</td><td>+1 239 645 руб.</td></tr>
+                    <tr><td>Прочие затраты</td><td>760 000 руб./год</td><td>425 000 руб./год</td><td><strong style="color:#2d7d2d;">−335 000 руб.</strong></td></tr>
+                    <tr><td><strong>ИТОГО ЗАТРАТЫ В ГОД</strong></td><td><strong>7 470 000 руб.</strong></td><td><strong>4 224 645 руб.</strong></td><td><strong style="color:#2d7d2d;">−3 245 355 руб.</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="note-section">
+            <h2>Экономический эффект</h2>
+            <table class="data-table">
+                <tr><th>Показатель</th><th>Значение</th></tr>
+                <tr><td>Чистая экономия в год</td><td><strong style="color:#2d7d2d; font-size:1.15rem;">3 245 355 руб. (−43%)</strong></td></tr>
+                <tr><td>Срок окупаемости</td><td><strong style="font-size:1.15rem;">1,54 года (~18,5 месяцев)</strong></td></tr>
+                <tr><td>ROI за 3 года</td><td><strong>195%</strong> (экономия 4,75 млн руб.)</td></tr>
+                <tr><td>ROI за 5 лет</td><td><strong style="color:#2d7d2d;">326%</strong> (экономия 11,24 млн руб.)</td></tr>
+                <tr><td>Персонал</td><td>8 чел. → 2 чел. (<strong>↓75%</strong>)</td></tr>
+                <tr><td>Время уборки 15 км</td><td>16 ч → 6 ч (<strong>↓ в 2,7 раза</strong>)</td></tr>
+                <tr><td>Простой путей</td><td>72 ч/год → 24 ч/год (<strong>↓67%</strong>)</td></tr>
+                <tr><td>Риск травматизма</td><td>5% → 0,5% (<strong>↓ в 10 раз</strong>)</td></tr>
+                <tr><td>Качество уборки</td><td>75% → 95% (<strong>↑20%</strong>)</td></tr>
+            </table>
+        </div>
+
+        <div class="photo-block">
+            <div class="photo-frame" style="height:400px;">
+                <img src="pic7.png" alt="Прототип МЗ-Д4 на железнодорожных путях">
+            </div>
+            <div class="photo-caption">Рис. 7. Функциональный прототип робота МЗ-Д4 на испытательном полигоне</div>
+        </div>
+    </div>
+</section>
+
+<script>
+function showSection(sectionId, linkEl) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    if (linkEl) linkEl.classList.add('active');
+    
+    window.scrollTo(0, 0);
+}
+
+let currentSlide = 1;
+const totalSlides = 8;
+
+function initSlideDots() {
+    const dotsContainer = document.getElementById('slideDots');
+    if (!dotsContainer) return;
+    for (let i = 1; i <= totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'slide-dot' + (i === 1 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+}
+
+function updateSlide() {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const slide = document.getElementById('slide-' + currentSlide);
+    if (slide) slide.classList.add('active');
+    
+    document.querySelectorAll('.slide-dot').forEach((d, i) => {
+        d.classList.toggle('active', i + 1 === currentSlide);
+    });
+    
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    if (prevBtn) prevBtn.disabled = currentSlide === 1;
+    if (nextBtn) nextBtn.disabled = currentSlide === totalSlides;
+}
+
+function changeSlide(direction) {
+    currentSlide += direction;
+    if (currentSlide < 1) currentSlide = 1;
+    if (currentSlide > totalSlides) currentSlide = totalSlides;
+    updateSlide();
+}
+
+function goToSlide(n) {
+    currentSlide = n;
+    updateSlide();
+}
+
+document.addEventListener('keydown', (e) => {
+    if (document.getElementById('presentation').classList.contains('active')) {
+        if (e.key === 'ArrowRight') changeSlide(1);
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+    }
+});
+
+initSlideDots();
+updateSlide();
+</script>
+
+</body>
+</html>
