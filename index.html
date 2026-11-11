@@ -656,30 +656,804 @@
         .slide-title { font-size: 1.5rem; }
         .slide-nav { flex-wrap: wrap; justify-content: center; }
     }
+
+
+    /* ================================================================
+       ADAPTIVE LAYER — fluid layout, resilient content and accessibility
+       ================================================================ */
+    :root {
+        --header-height: 68px;
+        --content-width: 1180px;
+        --page-gutter: clamp(1rem, 4vw, 3rem);
+        --surface: #fff;
+        --surface-muted: #fafafa;
+        --ink: #1a1a1a;
+        --navy: #1a1a2e;
+        --blue: #0f3460;
+        --accent: #c41a1f;
+        --border: #e2e2e2;
+        --shadow-card: 0 6px 24px rgba(0, 0, 0, .07);
+    }
+
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: calc(var(--header-height) + 1rem);
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+
+    body {
+        min-width: 320px;
+        color: var(--ink);
+        overflow-wrap: break-word;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    img,
+    svg,
+    video,
+    canvas {
+        display: block;
+        max-width: 100%;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
+
+    button {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    :focus-visible {
+        outline: 3px solid #e63946;
+        outline-offset: 3px;
+    }
+
+    .nav {
+        height: var(--header-height);
+        min-height: var(--header-height);
+        padding-inline: clamp(1rem, 3.5vw, 3rem);
+        gap: clamp(.5rem, 1.5vw, 1.25rem);
+    }
+
+    .nav-logo {
+        flex: 0 0 auto;
+        gap: .75rem;
+        white-space: nowrap;
+    }
+
+    .nav-logo .logo-box {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+    }
+
+    .nav-links {
+        flex: 1 1 auto;
+        min-width: 0;
+        justify-content: flex-end;
+        gap: .15rem;
+        margin: 0;
+    }
+
+    .nav-link {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: .55rem clamp(.55rem, 1.1vw, 1rem);
+        border: 0;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        background: transparent;
+        color: rgba(255,255,255,.78);
+        font: inherit;
+        font-size: clamp(.82rem, .95vw, .96rem);
+        line-height: 1.25;
+        text-align: center;
+        cursor: pointer;
+        white-space: normal;
+        transition: color .2s ease, background-color .2s ease, border-color .2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        color: #fff;
+        border-bottom-color: var(--accent);
+    }
+
+    .menu-toggle {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        margin: 0 0 0 auto;
+        padding: 0;
+        border: 1px solid rgba(255,255,255,.25);
+        border-radius: 6px;
+        background: transparent;
+        color: #fff;
+        font-size: 1.55rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .menu-toggle:hover,
+    .menu-toggle[aria-expanded="true"] {
+        background: rgba(255,255,255,.1);
+    }
+
+    .nav-logos {
+        gap: .7rem;
+        padding: .3rem .65rem;
+    }
+
+    .nav-logos img {
+        max-width: 88px;
+        height: 27px;
+    }
+
+    .section {
+        padding-top: var(--header-height);
+    }
+
+    .hero {
+        min-height: clamp(34rem, calc(100svh - var(--header-height)), 56rem);
+        min-height: clamp(34rem, calc(100vh - var(--header-height)), 56rem);
+    }
+
+    .hero-content {
+        width: min(100%, var(--content-width));
+        padding: clamp(3rem, 7vw, 5.5rem) var(--page-gutter);
+    }
+
+    .hero-badge {
+        max-width: 100%;
+        padding: .55rem 1rem;
+        font-size: clamp(.8rem, 1.3vw, .95rem);
+        line-height: 1.5;
+    }
+
+    .hero h1 {
+        max-width: 19ch;
+        font-size: clamp(2.25rem, 5.2vw, 3.8rem);
+        line-height: 1.1;
+        text-wrap: balance;
+    }
+
+    .hero-subtitle {
+        max-width: 66ch;
+        font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+        line-height: 1.65;
+    }
+
+    .hero-buttons {
+        align-items: stretch;
+    }
+
+    .btn,
+    .slide-btn {
+        min-height: 48px;
+        border-radius: 4px;
+    }
+
+    .stats-grid {
+        width: min(100%, 1300px);
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr));
+        padding: clamp(2.25rem, 5vw, 4rem) var(--page-gutter);
+        gap: clamp(.8rem, 1.6vw, 1.5rem);
+    }
+
+    .stat-card {
+        min-width: 0;
+        padding: clamp(1.2rem, 2.5vw, 2.25rem) 1rem;
+        box-shadow: var(--shadow-card);
+    }
+
+    .stat-number {
+        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        line-height: 1.15;
+        overflow-wrap: normal;
+    }
+
+    .stat-label {
+        line-height: 1.45;
+    }
+
+    .container {
+        width: min(100%, var(--content-width));
+        padding: clamp(2.5rem, 5vw, 4rem) var(--page-gutter);
+    }
+
+    .container h1 {
+        font-size: clamp(2rem, 4.5vw, 2.8rem) !important;
+        line-height: 1.15;
+        text-wrap: balance;
+    }
+
+    .container h2,
+    .toc h2,
+    .note-section h2 {
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        line-height: 1.25;
+        text-wrap: balance;
+    }
+
+    .container h3,
+    .note-section h3 {
+        font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+        line-height: 1.35;
+    }
+
+    .container p,
+    .note-section p {
+        max-width: 78ch;
+        text-align: left;
+        text-indent: 0;
+        line-height: 1.75;
+        hyphens: auto;
+    }
+
+    .container ul,
+    .container ol,
+    .note-section ul,
+    .note-section ol {
+        padding-left: clamp(1.25rem, 3vw, 2.25rem);
+    }
+
+    .container li,
+    .note-section li {
+        padding-left: .15rem;
+        overflow-wrap: anywhere;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 265px), 1fr));
+        gap: clamp(.9rem, 1.8vw, 1.5rem);
+    }
+
+    .feature-card {
+        min-width: 0;
+        padding: clamp(1.15rem, 2.3vw, 1.8rem);
+    }
+
+    .feature-card h4 {
+        font-size: clamp(1.02rem, 1.4vw, 1.15rem);
+        line-height: 1.35;
+    }
+
+    .photo-block {
+        min-width: 0;
+        padding: clamp(.75rem, 2vw, 1.5rem);
+        box-shadow: var(--shadow-card);
+    }
+
+    .photo-frame {
+        width: 100%;
+        height: auto;
+        min-height: 180px;
+        aspect-ratio: 16 / 10;
+    }
+
+    .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .diagram-frame {
+        width: 100%;
+        max-width: 900px;
+        height: auto !important;
+        min-height: 0;
+        aspect-ratio: 1280 / 853;
+        padding: clamp(.35rem, 1.5vw, 1rem);
+    }
+
+    .diagram-frame img {
+        object-fit: contain;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(.75rem, 2vw, 1.5rem);
+    }
+
+    .photo-grid .photo-frame {
+        height: auto;
+        min-height: 0;
+        aspect-ratio: 4 / 3;
+    }
+
+    .photo-caption {
+        font-size: clamp(.82rem, 1.2vw, .95rem);
+        line-height: 1.55;
+    }
+
+    .table-responsive {
+        width: 100%;
+        max-width: 100%;
+        margin: 1.25rem 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
+        scrollbar-gutter: stable;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        background: #fff;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .data-table {
+        width: 100%;
+        min-width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+        font-size: clamp(.84rem, 1.2vw, .98rem);
+        line-height: 1.5;
+    }
+
+    .data-table.data-table--wide {
+        min-width: 680px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: .8rem clamp(.65rem, 1.4vw, 1rem);
+        vertical-align: top;
+        overflow-wrap: anywhere;
+    }
+
+    .data-table th {
+        position: relative;
+        line-height: 1.4;
+    }
+
+    .data-table tr:nth-child(even) td {
+        background: #fafafa;
+    }
+
+    .data-table tr:hover td {
+        background: #f2f3f5;
+    }
+
+    .table-responsive:focus-visible {
+        outline-offset: 2px;
+    }
+
+    .highlight {
+        padding: clamp(1rem, 2.5vw, 1.5rem);
+        overflow-wrap: anywhere;
+    }
+
+    .toc {
+        padding: clamp(1.2rem, 3vw, 2.5rem);
+        border-radius: 5px;
+        box-shadow: var(--shadow-card);
+    }
+
+    .toc-list li {
+        padding: .65rem 0;
+        line-height: 1.5;
+    }
+
+    .toc-list a {
+        display: inline;
+        overflow-wrap: anywhere;
+    }
+
+    .toc-list .toc-num {
+        width: 2.2rem;
+        vertical-align: top;
+    }
+
+    .note-section {
+        min-width: 0;
+        padding: clamp(1.2rem, 3.5vw, 2.5rem);
+        margin-bottom: clamp(1.25rem, 3vw, 2rem);
+        border-radius: 5px;
+        box-shadow: var(--shadow-card);
+        scroll-margin-top: calc(var(--header-height) + 1rem);
+    }
+
+    .presentation {
+        min-height: calc(100vh - var(--header-height));
+        padding: clamp(1rem, 3vw, 3rem) var(--page-gutter);
+    }
+
+    .slide-container {
+        width: min(100%, 1100px);
+    }
+
+    .slide {
+        min-width: 0;
+        min-height: clamp(34rem, 64vh, 48rem);
+        padding: clamp(1.25rem, 4vw, 3.5rem);
+        border-radius: 5px;
+        box-shadow: 0 10px 40px rgba(0,0,0,.22);
+    }
+
+    .slide-header {
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .slide-title {
+        min-width: 0;
+        font-size: clamp(1.35rem, 3vw, 2rem);
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+    }
+
+    .slide-number {
+        flex: 0 0 auto;
+        padding: .45rem .85rem;
+        border-radius: 3px;
+        font-size: .9rem;
+    }
+
+    .slide-content,
+    .slide > ul,
+    .slide > ol {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .slide-nav {
+        flex-wrap: wrap;
+        gap: clamp(.65rem, 2vw, 1.5rem);
+    }
+
+    .slide-btn {
+        padding: .75rem 1.4rem;
+    }
+
+    .slide-dots {
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .slide-dot {
+        appearance: none;
+        flex: 0 0 12px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+    }
+
+    .slide-dot:focus-visible {
+        outline-offset: 4px;
+    }
+
+    @media (max-width: 1100px) {
+        .nav {
+            padding-inline: 1.25rem;
+        }
+
+        .nav-links {
+            gap: 0;
+        }
+
+        .nav-link {
+            padding-inline: .65rem;
+        }
+
+        .nav-logos {
+            gap: .45rem;
+            padding-inline: .5rem;
+        }
+
+        .nav-logos img {
+            max-width: 72px;
+            height: 24px;
+        }
+    }
+
+    @media (max-width: 900px) {
+        :root {
+            --header-height: 64px;
+        }
+
+        .nav {
+            justify-content: space-between;
+            padding-inline: 1rem;
+        }
+
+        .menu-toggle {
+            display: inline-flex;
+        }
+
+        .nav-logos {
+            display: none;
+        }
+
+        .nav-links {
+            position: absolute;
+            top: calc(var(--header-height) - 1px);
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            margin: 0;
+            padding: .55rem 1rem .85rem;
+            background: var(--navy);
+            border-bottom: 3px solid var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,.22);
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-8px);
+            transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+        }
+
+        .nav-links.active {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .nav-link {
+            width: 100%;
+            min-height: 48px;
+            justify-content: flex-start;
+            padding: .8rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .nav-link:last-child {
+            border-bottom: 0;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,.06);
+            border-bottom-color: rgba(255,255,255,.1);
+        }
+
+        .hero {
+            min-height: auto;
+            padding: 0;
+        }
+
+        .hero-content {
+            padding-block: clamp(3rem, 9vw, 5rem);
+        }
+
+        .slide {
+            min-height: auto;
+        }
+
+        .slide-header {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 680px) {
+        .photo-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .photo-grid .photo-frame {
+            aspect-ratio: 16 / 10;
+        }
+
+        .feature-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .presentation {
+            padding-inline: .75rem;
+        }
+
+        .slide-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: .7rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide-number {
+            align-self: flex-start;
+        }
+
+        .slide-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-items: stretch;
+            gap: .75rem;
+            margin-top: 1.25rem;
+        }
+
+        .slide-dots {
+            grid-column: 1 / -1;
+            grid-row: 1;
+            min-height: 24px;
+        }
+
+        #prevBtn {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        #nextBtn {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .slide-btn {
+            width: 100%;
+            padding-inline: .75rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        :root {
+            --header-height: 60px;
+            --page-gutter: 1rem;
+        }
+
+        .nav-logo {
+            gap: .6rem;
+            font-size: 1.1rem;
+        }
+
+        .nav-logo .logo-box {
+            width: 38px;
+            height: 38px;
+            flex-basis: 38px;
+            font-size: 1rem;
+        }
+
+        .hero-content {
+            padding-block: 2.75rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8.7vw, 2.55rem);
+        }
+
+        .hero-badge {
+            margin-bottom: 1.35rem;
+        }
+
+        .hero-subtitle {
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            gap: .75rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: .9rem 1rem;
+            font-size: .98rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .7rem;
+            padding-block: 1.75rem;
+        }
+
+        .stat-card {
+            padding: 1.1rem .65rem;
+        }
+
+        .stat-number {
+            font-size: clamp(1.65rem, 7vw, 2.15rem);
+        }
+
+        .stat-label {
+            font-size: .82rem;
+        }
+
+        .container {
+            padding-block: 2.25rem;
+        }
+
+        .toc-list .toc-num {
+            width: 1.9rem;
+        }
+
+        .note-section h2 {
+            padding-bottom: .55rem;
+        }
+
+        .data-table.data-table--wide {
+            min-width: 640px;
+        }
+
+        .slide {
+            padding: 1.1rem .9rem;
+        }
+
+        .slide-content,
+        .slide > ul,
+        .slide > ol {
+            font-size: .98rem !important;
+            line-height: 1.65 !important;
+        }
+
+        .slide .photo-block {
+            margin-top: 1.25rem !important;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .stats-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .stat-card {
+            padding: 1rem;
+        }
+
+        .slide-number {
+            font-size: .82rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            scroll-behavior: auto !important;
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: .01ms !important;
+        }
+    }
+
 </style>
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" aria-label="Основная навигация">
     <div class="nav-logo">
-        <div class="logo-box">МЗ</div>
+        <div class="logo-box" aria-hidden="true">МЗ</div>
         <span>МЗ-Д4</span>
     </div>
-    
-    <!-- Гамбургер для мобильных -->
-    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+    <button class="menu-toggle" type="button" aria-label="Открыть меню"
+            aria-expanded="false" aria-controls="navLinks" onclick="toggleMenu()">
+        <span aria-hidden="true">☰</span>
+    </button>
 
     <div class="nav-links" id="navLinks">
-        <a class="nav-link active" onclick="showSection('home', this); toggleMenu()">Главная</a>
-        <a class="nav-link" onclick="showSection('presentation', this); toggleMenu()">Презентация</a>
-        <a class="nav-link" onclick="showSection('explanatory', this); toggleMenu()">Пояснительная записка</a>
-        <a class="nav-link" onclick="showSection('economics', this); toggleMenu()">Экономика</a>
+        <button type="button" class="nav-link active" data-section="home" aria-current="page" onclick="showSection('home', this)">Главная</button>
+        <button type="button" class="nav-link" data-section="presentation" onclick="showSection('presentation', this)">Презентация</button>
+        <button type="button" class="nav-link" data-section="explanatory" onclick="showSection('explanatory', this)">Пояснительная записка</button>
+        <button type="button" class="nav-link" data-section="economics" onclick="showSection('economics', this)">Экономика</button>
     </div>
-    
-    <!-- ДОБАВЛЕННЫЕ ЛОГОТИПЫ -->
-    <div class="nav-logos">
-        <img src="logo_pervye.png" alt="Движение Первых">
-        <img src="logo_rzd.png" alt="РЖД">
+
+    <div class="nav-logos" aria-label="Логотипы организаторов">
+        <img src="logo_pervye.png" alt="Движение Первых" loading="lazy" decoding="async">
+        <img src="logo_rzd.png" alt="РЖД" loading="lazy" decoding="async">
     </div>
 </nav>
 
@@ -691,8 +1465,8 @@
             <h1>Автономный робототехнический комплекс <span>МЗ-Д4</span></h1>
             <p class="hero-subtitle">Интеллектуальная система для инспекции, очистки и ремонта железнодорожной инфраструктуры без остановки движения поездов</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary" onclick="showSection('presentation', document.querySelectorAll('.nav-link')[1])">Презентация проекта</button>
-                <button class="btn btn-secondary" onclick="showSection('explanatory', document.querySelectorAll('.nav-link')[2])">Пояснительная записка</button>
+                <button class="btn btn-primary" onclick="showSection('presentation', document.querySelector('[data-section="presentation"]'))">Презентация проекта</button>
+                <button class="btn btn-secondary" onclick="showSection('explanatory', document.querySelector('[data-section="explanatory"]'))">Пояснительная записка</button>
             </div>
         </div>
     </div>
@@ -752,14 +1526,14 @@
         <!-- СХЕМА НА ГЛАВНОЙ (1280x853) -->
         <div class="photo-block">
             <div class="photo-frame diagram-frame">
-                <img src="schema_new.png" alt="Схема работы автономного робота МЗ-Д4">
+                <img src="schema_new.png" alt="Схема работы автономного робота МЗ-Д4" loading="lazy" decoding="async">
             </div>
             <div class="photo-caption">Схема работы автономного робота «МЗ-Д4»</div>
         </div>
 
         <div class="photo-block">
             <div class="photo-frame">
-                <img src="pic1.png" alt="Прототип МЗ-Д4 на железнодорожных путях">
+                <img src="pic1.png" alt="Прототип МЗ-Д4 на железнодорожных путях" loading="lazy" decoding="async">
             </div>
             <div class="photo-caption">Рис. 1. Функциональный прототип робота МЗ-Д4 на испытательном полигоне</div>
         </div>
@@ -869,7 +1643,7 @@
                 
                 <div class="photo-block" style="margin-top:2rem;">
                     <div class="photo-frame diagram-frame">
-                        <img src="pic2.png" alt="Схема работы автономного робота «МЗ-Д4»">
+                        <img src="pic2.png" alt="Схема работы автономного робота «МЗ-Д4»" loading="lazy" decoding="async">
                     </div>
                     <div class="photo-caption">Рис. 2. Схема работы автономного робота «МЗ-Д4»</div>
                 </div>
@@ -969,10 +1743,10 @@
                 <div class="photo-block">
                     <div class="photo-grid">
                         <div class="photo-frame">
-                            <img src="pic3.png" alt="Команда за работой">
+                            <img src="pic3.png" alt="Команда за работой" loading="lazy" decoding="async">
                         </div>
                         <div class="photo-frame">
-                            <img src="pic4.png" alt="Испытания на путях">
+                            <img src="pic4.png" alt="Испытания на путях" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="photo-caption">Рис. 3–4. Работа команды ЕЯЭК над проектом МЗ-Д4</div>
@@ -1293,7 +2067,7 @@
             
             <div class="photo-block">
                 <div class="photo-frame" style="height:380px;">
-                    <img src="pic5.png" alt="3D-модель корпуса робота МЗ-Д4">
+                    <img src="pic5.png" alt="3D-модель корпуса робота МЗ-Д4" loading="lazy" decoding="async">
                 </div>
                 <div class="photo-caption">Рис. 5. Трёхмерная модель корпуса робота на железнодорожных путях</div>
             </div>
@@ -1345,7 +2119,7 @@
             
             <div class="photo-block">
                 <div class="photo-frame" style="height:350px;">
-                    <img src="pic6.png" alt="Испытания на Малой Октябрьской ж/д">
+                    <img src="pic6.png" alt="Испытания на Малой Октябрьской ж/д" loading="lazy" decoding="async">
                 </div>
                 <div class="photo-caption">Рис. 6. Контрольные испытания прототипа на полигоне Малой Октябрьской железной дороги</div>
             </div>
@@ -1597,7 +2371,7 @@
 
         <div class="photo-block">
             <div class="photo-frame" style="aspect-ratio: 1280 / 960; height: auto;">
-                <img src="pic7.png" alt="Прототип МЗ-Д4 на железнодорожных путях">
+                <img src="pic7.png" alt="Прототип МЗ-Д4 на железнодорожных путях" loading="lazy" decoding="async">
             </div>
             <div class="photo-caption">Рис. 7. Функциональный прототип робота МЗ-Д4 на испытательном полигоне</div>
         </div>
@@ -1606,44 +2380,102 @@
 
 <script>
 function showSection(sectionId, linkEl) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
-    
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    if (linkEl) linkEl.classList.add('active');
-    
-    window.scrollTo(0, 0);
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.toggle('active', section === target);
+        section.setAttribute('aria-hidden', String(section !== target));
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const isActive = link === linkEl;
+        link.classList.toggle('active', isActive);
+        if (isActive) {
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.removeAttribute('aria-current');
+        }
+    });
+
+    toggleMenu(false);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
 }
 
-// Функция для мобильного меню
-function toggleMenu() {
+function toggleMenu(forceOpen) {
     const navLinks = document.getElementById('navLinks');
-    navLinks.classList.toggle('active');
+    const menuToggle = document.querySelector('.menu-toggle');
+    if (!navLinks || !menuToggle) return;
+
+    const shouldOpen = typeof forceOpen === 'boolean'
+        ? forceOpen
+        : !navLinks.classList.contains('active');
+
+    navLinks.classList.toggle('active', shouldOpen);
+    menuToggle.setAttribute('aria-expanded', String(shouldOpen));
+    menuToggle.setAttribute('aria-label', shouldOpen ? 'Закрыть меню' : 'Открыть меню');
 }
 
+// Add a compact/scrollable mode to tables depending on their real column count.
+document.querySelectorAll('.table-responsive').forEach(wrapper => {
+    const table = wrapper.querySelector('.data-table');
+    if (!table) return;
+
+    const columnCount = Math.max(0, ...Array.from(table.rows, row =>
+        Array.from(row.cells).reduce((sum, cell) => sum + (cell.colSpan || 1), 0)
+    ));
+
+    if (columnCount > 2) {
+        table.classList.add('data-table--wide');
+        wrapper.setAttribute('tabindex', '0');
+        wrapper.setAttribute('role', 'region');
+        wrapper.setAttribute('aria-label', 'Таблица. Для просмотра остальных столбцов используйте горизонтальную прокрутку.');
+    } else {
+        table.classList.add('data-table--compact');
+    }
+});
+
+const slides = Array.from(document.querySelectorAll('.slide'));
 let currentSlide = 1;
-const totalSlides = 8;
+const totalSlides = slides.length;
 
 function initSlideDots() {
     const dotsContainer = document.getElementById('slideDots');
-    if (!dotsContainer) return;
+    if (!dotsContainer || !totalSlides) return;
+
+    dotsContainer.replaceChildren();
     for (let i = 1; i <= totalSlides; i++) {
-        const dot = document.createElement('div');
+        const dot = document.createElement('button');
+        dot.type = 'button';
         dot.className = 'slide-dot' + (i === 1 ? ' active' : '');
-        dot.onclick = () => goToSlide(i);
+        dot.setAttribute('aria-label', `Перейти к слайду ${i}`);
+        dot.setAttribute('aria-current', i === 1 ? 'step' : 'false');
+        dot.addEventListener('click', () => goToSlide(i));
         dotsContainer.appendChild(dot);
     }
 }
 
 function updateSlide() {
-    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-    const slide = document.getElementById('slide-' + currentSlide);
-    if (slide) slide.classList.add('active');
-    
-    document.querySelectorAll('.slide-dot').forEach((d, i) => {
-        d.classList.toggle('active', i + 1 === currentSlide);
+    slides.forEach((slide, index) => {
+        const isActive = index + 1 === currentSlide;
+        slide.classList.toggle('active', isActive);
+        slide.setAttribute('aria-hidden', String(!isActive));
+        slide.setAttribute('role', 'group');
+        slide.setAttribute('aria-roledescription', 'слайд');
+        slide.setAttribute('aria-label', `Слайд ${index + 1} из ${totalSlides}`);
     });
-    
+
+    document.querySelectorAll('.slide-dot').forEach((dot, index) => {
+        const isActive = index + 1 === currentSlide;
+        dot.classList.toggle('active', isActive);
+        if (isActive) {
+            dot.setAttribute('aria-current', 'step');
+        } else {
+            dot.removeAttribute('aria-current');
+        }
+    });
+
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     if (prevBtn) prevBtn.disabled = currentSlide === 1;
@@ -1651,22 +2483,36 @@ function updateSlide() {
 }
 
 function changeSlide(direction) {
-    currentSlide += direction;
-    if (currentSlide < 1) currentSlide = 1;
-    if (currentSlide > totalSlides) currentSlide = totalSlides;
+    currentSlide = Math.min(totalSlides, Math.max(1, currentSlide + direction));
     updateSlide();
 }
 
-function goToSlide(n) {
-    currentSlide = n;
+function goToSlide(number) {
+    currentSlide = Math.min(totalSlides, Math.max(1, number));
     updateSlide();
 }
 
-document.addEventListener('keydown', (e) => {
-    if (document.getElementById('presentation').classList.contains('active')) {
-        if (e.key === 'ArrowRight') changeSlide(1);
-        if (e.key === 'ArrowLeft') changeSlide(-1);
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+        toggleMenu(false);
+        return;
     }
+
+    const presentation = document.getElementById('presentation');
+    const editingElement = event.target.closest('input, textarea, select, [contenteditable="true"]');
+    if (!presentation || !presentation.classList.contains('active') || editingElement) return;
+
+    if (event.key === 'ArrowRight') changeSlide(1);
+    if (event.key === 'ArrowLeft') changeSlide(-1);
+});
+
+document.addEventListener('click', event => {
+    if (!event.target.closest('.nav')) toggleMenu(false);
+});
+
+// Keep the initially visible section in sync with assistive technology.
+document.querySelectorAll('.section').forEach(section => {
+    section.setAttribute('aria-hidden', String(!section.classList.contains('active')));
 });
 
 initSlideDots();
