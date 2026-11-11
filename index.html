@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="ru">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>МЗ-Д4 — Автономный робототехнический комплекс</title>
+
+<!-- Подключение шрифта Open Sans -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'Open Sans', sans-serif;
         background: #f5f3ef;
         color: #1a1a1a;
         line-height: 1.7;
@@ -58,6 +63,8 @@
     .nav-links {
         display: flex;
         gap: 0.5rem;
+        margin-left: auto;
+        margin-right: 2rem;
     }
     
     .nav-link {
@@ -68,11 +75,43 @@
         cursor: pointer;
         transition: all 0.3s;
         border-bottom: 2px solid transparent;
+        font-family: 'Open Sans', sans-serif;
     }
     
     .nav-link:hover, .nav-link.active {
         color: white;
         border-bottom-color: #c41a1f;
+    }
+
+    /* Гамбургер меню */
+    .menu-toggle {
+        display: none;
+        color: white;
+        font-size: 1.8rem;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: 1rem;
+        user-select: none;
+    }
+
+    /* Стили для логотипов в шапке */
+    .nav-logos {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: white;
+        padding: 4px 12px;
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        flex-shrink: 0;
+    }
+
+    .nav-logos img {
+        height: 28px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+        flex-shrink: 0;
     }
     
     /* Sections */
@@ -119,7 +158,7 @@
     
     .hero h1 {
         font-size: 3.8rem;
-        font-weight: bold;
+        font-weight: 700;
         line-height: 1.15;
         margin-bottom: 1.5rem;
     }
@@ -143,12 +182,13 @@
     .btn {
         padding: 1rem 2.2rem;
         font-size: 1.05rem;
-        font-weight: bold;
+        font-weight: 600;
         cursor: pointer;
         transition: all 0.3s;
         border: none;
-        font-family: "Times New Roman", Times, serif;
+        font-family: 'Open Sans', sans-serif;
         letter-spacing: 0.5px;
+        text-align: center;
     }
     
     .btn-primary {
@@ -192,7 +232,7 @@
     
     .stat-number {
         font-size: 2.8rem;
-        font-weight: bold;
+        font-weight: 700;
         color: #c41a1f;
         margin-bottom: 0.5rem;
     }
@@ -281,6 +321,20 @@
         position: relative;
         z-index: 1;
     }
+
+    /* Специальный стиль для схемы (1280х853) */
+    .diagram-frame {
+        aspect-ratio: 1280 / 853;
+        height: auto !important;
+        max-width: 900px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 1rem;
+    }
+    
+    .diagram-frame img {
+        object-fit: contain; 
+    }
     
     .photo-caption {
         margin-top: 1rem;
@@ -304,11 +358,18 @@
     }
     
     /* Tables */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
     .data-table {
         width: 100%;
         border-collapse: collapse;
         margin: 1.5rem 0;
         font-size: 1rem;
+        min-width: 600px; /* Чтобы таблица не сжималась в кашу */
     }
     
     .data-table th {
@@ -316,7 +377,7 @@
         color: white;
         padding: 0.9rem 1rem;
         text-align: left;
-        font-weight: bold;
+        font-weight: 700;
     }
     
     .data-table td {
@@ -444,7 +505,7 @@
     
     .slide-title {
         font-size: 2rem;
-        font-weight: bold;
+        font-weight: 700;
         color: #1a1a2e;
     }
     
@@ -453,6 +514,8 @@
         color: white;
         padding: 0.5rem 1.2rem;
         font-size: 1rem;
+        font-weight: 600;
+        white-space: nowrap;
     }
     
     .slide-nav {
@@ -469,11 +532,16 @@
         color: white;
         border: none;
         cursor: pointer;
-        font-family: "Times New Roman", Times, serif;
+        font-family: 'Open Sans', sans-serif;
         font-size: 1rem;
-        font-weight: bold;
+        font-weight: 600;
+        transition: all 0.3s;
     }
     
+    .slide-btn:hover:not(:disabled) {
+        background: #a01519;
+    }
+
     .slide-btn:disabled {
         opacity: 0.4;
         cursor: not-allowed;
@@ -490,6 +558,7 @@
         border-radius: 50%;
         background: rgba(255,255,255,0.3);
         cursor: pointer;
+        transition: background 0.3s;
     }
     
     .slide-dot.active {
@@ -514,6 +583,7 @@
         color: #1a1a2e;
         margin-bottom: 0.6rem;
         font-size: 1.15rem;
+        font-weight: 700;
     }
     
     .feature-card p {
@@ -524,12 +594,67 @@
     }
     
     /* Responsive */
+    @media (max-width: 992px) {
+        .nav-logos {
+            display: none; /* Скрываем логотипы на планшетах и телефонах, чтобы не мешали */
+        }
+    }
+
     @media (max-width: 768px) {
+        .menu-toggle { display: block; }
+        
+        .nav { padding: 0 1rem; }
+        
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 65px;
+            left: 0;
+            right: 0;
+            background: #1a1a2e;
+            padding: 1rem 0;
+            border-bottom: 3px solid #c41a1f;
+            margin-right: 0;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        }
+        
+        .nav-links.active { display: flex; }
+        
+        .nav-link {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.05);
+            border-bottom-color: transparent;
+        }
+
+        .hero { min-height: auto; padding: 5rem 0; }
         .hero h1 { font-size: 2.2rem; }
-        .nav-links { display: none; }
-        .container { padding: 2rem 1.5rem; }
+        .hero-subtitle { font-size: 1.1rem; }
+        
+        .hero-buttons { flex-direction: column; }
+        .btn { width: 100%; padding: 1rem; }
+        
+        .stats-grid { padding: 2rem 1rem; gap: 1rem; }
+        .stat-card { padding: 1.5rem 1rem; }
+        
+        .container { padding: 2rem 1rem; }
+        
         .photo-grid { grid-template-columns: 1fr; }
-        .slide { padding: 2rem 1.5rem; }
+        .photo-grid .photo-frame { height: 250px; }
+        
+        .feature-grid { grid-template-columns: 1fr; }
+        
+        .note-section { padding: 1.5rem; }
+        .toc { padding: 1.5rem; }
+        
+        .presentation { padding: 1.5rem 0.5rem; }
+        .slide { padding: 1.5rem 1rem; }
+        .slide-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        .slide-title { font-size: 1.5rem; }
+        .slide-nav { flex-wrap: wrap; justify-content: center; }
     }
 </style>
 </head>
@@ -540,11 +665,21 @@
         <div class="logo-box">МЗ</div>
         <span>МЗ-Д4</span>
     </div>
-    <div class="nav-links">
-        <a class="nav-link active" onclick="showSection('home', this)">Главная</a>
-        <a class="nav-link" onclick="showSection('presentation', this)">Презентация</a>
-        <a class="nav-link" onclick="showSection('explanatory', this)">Пояснительная записка</a>
-        <a class="nav-link" onclick="showSection('economics', this)">Экономика</a>
+    
+    <!-- Гамбургер для мобильных -->
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+    <div class="nav-links" id="navLinks">
+        <a class="nav-link active" onclick="showSection('home', this); toggleMenu()">Главная</a>
+        <a class="nav-link" onclick="showSection('presentation', this); toggleMenu()">Презентация</a>
+        <a class="nav-link" onclick="showSection('explanatory', this); toggleMenu()">Пояснительная записка</a>
+        <a class="nav-link" onclick="showSection('economics', this); toggleMenu()">Экономика</a>
+    </div>
+    
+    <!-- ДОБАВЛЕННЫЕ ЛОГОТИПЫ -->
+    <div class="nav-logos">
+        <img src="logo_pervye.png" alt="Движение Первых">
+        <img src="logo_rzd.png" alt="РЖД">
     </div>
 </nav>
 
@@ -614,9 +749,17 @@
             </div>
         </div>
 
+        <!-- СХЕМА НА ГЛАВНОЙ (1280x853) -->
+        <div class="photo-block">
+            <div class="photo-frame diagram-frame">
+                <img src="schema_new.png" alt="Схема работы автономного робота МЗ-Д4">
+            </div>
+            <div class="photo-caption">Схема работы автономного робота «МЗ-Д4»</div>
+        </div>
+
         <div class="photo-block">
             <div class="photo-frame">
-                <img src="1pic.png" alt="Прототип МЗ-Д4 на железнодорожных путях">
+                <img src="pic1.png" alt="Прототип МЗ-Д4 на железнодорожных путях">
             </div>
             <div class="photo-caption">Рис. 1. Функциональный прототип робота МЗ-Д4 на испытательном полигоне</div>
         </div>
@@ -656,54 +799,56 @@
                     <div class="slide-title">Существующие решения</div>
                     <div class="slide-number">2 / 8</div>
                 </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Характеристика</th>
-                            <th>Ручной труд</th>
-                            <th>«Декарт»</th>
-                            <th>NLB-500</th>
-                            <th>МЗ-Д4</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Метод контроля</td>
-                            <td>Визуальный осмотр</td>
-                            <td>Ультразвук (99,8%)</td>
-                            <td>Компьютерное зрение (97,8%)</td>
-                            <td><strong>YOLO v8 + лидары (81,8%)</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Производительность</td>
-                            <td>0,5–1 км/смену</td>
-                            <td>До 1000 км/сутки</td>
-                            <td>2–3 км/сутки</td>
-                            <td><strong>15–20 км/сутки</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Задержка поездов</td>
-                            <td>Риск остановки</td>
-                            <td>0 минут</td>
-                            <td>0 минут</td>
-                            <td><strong>0 минут</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Функционал</td>
-                            <td>Только осмотр</td>
-                            <td>Только диагностика</td>
-                            <td>Только диагностика</td>
-                            <td><strong>Инспекция + уборка + ремонт</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Стоимость</td>
-                            <td>250 тыс. руб./км/год</td>
-                            <td>~180 млн руб.</td>
-                            <td>Высокая</td>
-                            <td><strong>~1,77 млн руб.</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Характеристика</th>
+                                <th>Ручной труд</th>
+                                <th>«Декарт»</th>
+                                <th>NLB-500</th>
+                                <th>МЗ-Д4</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Метод контроля</td>
+                                <td>Визуальный осмотр</td>
+                                <td>Ультразвук (99,8%)</td>
+                                <td>Компьютерное зрение (97,8%)</td>
+                                <td><strong>YOLO v8 + лидары (81,8%)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Производительность</td>
+                                <td>0,5–1 км/смену</td>
+                                <td>До 1000 км/сутки</td>
+                                <td>2–3 км/сутки</td>
+                                <td><strong>15–20 км/сутки</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Задержка поездов</td>
+                                <td>Риск остановки</td>
+                                <td>0 минут</td>
+                                <td>0 минут</td>
+                                <td><strong>0 минут</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Функционал</td>
+                                <td>Только осмотр</td>
+                                <td>Только диагностика</td>
+                                <td>Только диагностика</td>
+                                <td><strong>Инспекция + уборка + ремонт</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Стоимость</td>
+                                <td>250 тыс. руб./км/год</td>
+                                <td>~180 млн руб.</td>
+                                <td>Высокая</td>
+                                <td><strong>~1,77 млн руб.</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="slide" id="slide-3">
@@ -723,10 +868,10 @@
                 </ol>
                 
                 <div class="photo-block" style="margin-top:2rem;">
-                    <div class="photo-frame" style="height:280px;">
-                        <img src="2pic.png" alt="Схема компонентов робота МЗ-Д4">
+                    <div class="photo-frame diagram-frame">
+                        <img src="pic2.png" alt="Схема работы автономного робота «МЗ-Д4»">
                     </div>
-                    <div class="photo-caption">Рис. 2. Архитектура аппаратных компонентов комплекса</div>
+                    <div class="photo-caption">Рис. 2. Схема работы автономного робота «МЗ-Д4»</div>
                 </div>
             </div>
 
@@ -805,13 +950,15 @@
                 </ul>
                 
                 <h3 style="color:#1a1a2e; margin-bottom:1rem;">Экономический эффект (участок 15 км)</h3>
-                <table class="data-table">
-                    <tr><td>Затраты ДО внедрения</td><td><strong>7 470 000 руб./год</strong></td></tr>
-                    <tr><td>Затраты ПОСЛЕ внедрения</td><td><strong>4 224 645 руб./год</strong></td></tr>
-                    <tr><td>Чистая экономия</td><td><strong style="color:#2d7d2d;">3 245 355 руб./год (−43%)</strong></td></tr>
-                    <tr><td>Срок окупаемости</td><td><strong>1,54 года (~18,5 мес.)</strong></td></tr>
-                    <tr><td>ROI за 5 лет</td><td><strong style="color:#2d7d2d;">326%</strong></td></tr>
-                </table>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <tr><td>Затраты ДО внедрения</td><td><strong>7 470 000 руб./год</strong></td></tr>
+                        <tr><td>Затраты ПОСЛЕ внедрения</td><td><strong>4 224 645 руб./год</strong></td></tr>
+                        <tr><td>Чистая экономия</td><td><strong style="color:#2d7d2d;">3 245 355 руб./год (−43%)</strong></td></tr>
+                        <tr><td>Срок окупаемости</td><td><strong>1,54 года (~18,5 мес.)</strong></td></tr>
+                        <tr><td>ROI за 5 лет</td><td><strong style="color:#2d7d2d;">326%</strong></td></tr>
+                    </table>
+                </div>
             </div>
 
             <div class="slide" id="slide-7">
@@ -822,10 +969,10 @@
                 <div class="photo-block">
                     <div class="photo-grid">
                         <div class="photo-frame">
-                            <img src="3pic.jpg" alt="Команда за работой">
+                            <img src="pic3.png" alt="Команда за работой">
                         </div>
                         <div class="photo-frame">
-                            <img src="pic4.jpg" alt="Испытания на путях">
+                            <img src="pic4.png" alt="Испытания на путях">
                         </div>
                     </div>
                     <div class="photo-caption">Рис. 3–4. Работа команды ЕЯЭК над проектом МЗ-Д4</div>
@@ -929,14 +1076,16 @@
             <h2>2. Актуальность и проблематика</h2>
             <p>Ежедневный осмотр железнодорожных путей критически зависит от ручного труда, что сопряжено с рядом серьёзных проблем.</p>
             
-            <table class="data-table">
-                <tr><th>Проблема</th><th>Последствия</th></tr>
-                <tr><td>Опасность для персонала</td><td>Десятки травм и гибелей ежегодно при выходе на путь</td></tr>
-                <tr><td>Человеческий фактор</td><td>Усталость приводит к пропуску 30–40% скрытых дефектов</td></tr>
-                <tr><td>Трудоёмкость</td><td>До 4 часов на 1 км пути при ручном обходе</td></tr>
-                <tr><td>Задержки поездов</td><td>Необходимость замедления или остановки движения при работах</td></tr>
-                <tr><td>Высокие затраты</td><td>250 000 руб./год на обслуживание 1 км пути ручным трудом</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Проблема</th><th>Последствия</th></tr>
+                    <tr><td>Опасность для персонала</td><td>Десятки травм и гибелей ежегодно при выходе на путь</td></tr>
+                    <tr><td>Человеческий фактор</td><td>Усталость приводит к пропуску 30–40% скрытых дефектов</td></tr>
+                    <tr><td>Трудоёмкость</td><td>До 4 часов на 1 км пути при ручном обходе</td></tr>
+                    <tr><td>Задержки поездов</td><td>Необходимость замедления или остановки движения при работах</td></tr>
+                    <tr><td>Высокие затраты</td><td>250 000 руб./год на обслуживание 1 км пути ручным трудом</td></tr>
+                </table>
+            </div>
             
             <h3>2.1. Обстоятельства использования</h3>
             <p>Робот МЗ-Д4 работает непосредственно в процессе непрерывного движения поездов, на перегонных участках, станциях и в депо, в температурном диапазоне от −20°C до +50°C, при влажности до 90% и запылённости средней интенсивности.</p>
@@ -952,61 +1101,63 @@
 
         <div id="note-3" class="note-section">
             <h2>3. Анализ существующих решений</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Характеристика</th>
-                        <th>Ручной труд</th>
-                        <th>«Декарт»</th>
-                        <th>NLB-500</th>
-                        <th>МЗ-Д4</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Метод контроля</td>
-                        <td>Визуальный осмотр</td>
-                        <td>Ультразвук (99,8%)</td>
-                        <td>Компьютерное зрение (97,8%)</td>
-                        <td><strong>YOLO v8 + лидары (81,8%)</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Геопозиция</td>
-                        <td>Ручная запись</td>
-                        <td>GPS/GLONASS</td>
-                        <td>GPS-метки</td>
-                        <td><strong>GPS/ГЛОНАСС + энкодеры</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Производительность</td>
-                        <td>0,5–1 км/смену</td>
-                        <td>До 1000 км/сутки</td>
-                        <td>2–3 км/сутки</td>
-                        <td><strong>15–20 км/сутки</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Задержка поездов</td>
-                        <td>Риск</td>
-                        <td>0 минут</td>
-                        <td>0 минут</td>
-                        <td><strong>0 минут</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Функционал</td>
-                        <td>Только осмотр</td>
-                        <td>Только диагностика</td>
-                        <td>Только диагностика</td>
-                        <td><strong>Инспекция + уборка + ремонт</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Стоимость</td>
-                        <td>250 тыс./км/год</td>
-                        <td>~180 млн руб.</td>
-                        <td>Высокая</td>
-                        <td><strong>~1,77 млн руб.</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Характеристика</th>
+                            <th>Ручной труд</th>
+                            <th>«Декарт»</th>
+                            <th>NLB-500</th>
+                            <th>МЗ-Д4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Метод контроля</td>
+                            <td>Визуальный осмотр</td>
+                            <td>Ультразвук (99,8%)</td>
+                            <td>Компьютерное зрение (97,8%)</td>
+                            <td><strong>YOLO v8 + лидары (81,8%)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Геопозиция</td>
+                            <td>Ручная запись</td>
+                            <td>GPS/GLONASS</td>
+                            <td>GPS-метки</td>
+                            <td><strong>GPS/ГЛОНАСС + энкодеры</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Производительность</td>
+                            <td>0,5–1 км/смену</td>
+                            <td>До 1000 км/сутки</td>
+                            <td>2–3 км/сутки</td>
+                            <td><strong>15–20 км/сутки</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Задержка поездов</td>
+                            <td>Риск</td>
+                            <td>0 минут</td>
+                            <td>0 минут</td>
+                            <td><strong>0 минут</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Функционал</td>
+                            <td>Только осмотр</td>
+                            <td>Только диагностика</td>
+                            <td>Только диагностика</td>
+                            <td><strong>Инспекция + уборка + ремонт</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Стоимость</td>
+                            <td>250 тыс./км/год</td>
+                            <td>~180 млн руб.</td>
+                            <td>Высокая</td>
+                            <td><strong>~1,77 млн руб.</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="highlight">
                 <strong>Вывод.</strong> Существующие решения либо выполняют только одну функцию, либо требуют значительных капиталовложений, либо не обеспечивают полной автономности. МЗ-Д4 — единственный комплекс, объединяющий все ключевые функции при доступной стоимости.
             </div>
@@ -1068,60 +1219,72 @@
             <h2>5. Технические характеристики</h2>
             
             <h3>5.1. Общие параметры</h3>
-            <table class="data-table">
-                <tr><td>Тип устройства</td><td>Комбинированный (наземный робот + воздушный модуль)</td></tr>
-                <tr><td>Способ движения</td><td>Колёсный по рельсам с системой аварийного съезда</td></tr>
-                <tr><td>Рабочая скорость</td><td>4,5–5 км/ч</td></tr>
-                <tr><td>Производительность</td><td>15–20 км путей/сутки</td></tr>
-                <tr><td>Рабочая температура</td><td>от −20°C до +50°C</td></tr>
-                <tr><td>Степень защиты корпуса</td><td>IP58</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><td>Тип устройства</td><td>Комбинированный (наземный робот + воздушный модуль)</td></tr>
+                    <tr><td>Способ движения</td><td>Колёсный по рельсам с системой аварийного съезда</td></tr>
+                    <tr><td>Рабочая скорость</td><td>4,5–5 км/ч</td></tr>
+                    <tr><td>Производительность</td><td>15–20 км путей/сутки</td></tr>
+                    <tr><td>Рабочая температура</td><td>от −20°C до +50°C</td></tr>
+                    <tr><td>Степень защиты корпуса</td><td>IP58</td></tr>
+                </table>
+            </div>
             
             <h3>5.2. Система энергообеспечения</h3>
-            <table class="data-table">
-                <tr><td>Основная АКБ</td><td>Li-ion, 60 В, 28 А·ч (537,6 Вт·ч)</td></tr>
-                <tr><td>Резервная АКБ</td><td>Li-ion, 24 В, 30 А·ч</td></tr>
-                <tr><td>Солнечные панели</td><td>Пиковая мощность 128 Вт, выработка до 512 Вт·ч/сутки</td></tr>
-                <tr><td>Автономность — только основная АКБ</td><td>10 ч 45 мин</td></tr>
-                <tr><td>Автономность — основная АКБ + солнце</td><td>21 ч 00 мин</td></tr>
-                <tr><td>Автономность — основная + резервная + солнце</td><td>39 ч 09 мин</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><td>Основная АКБ</td><td>Li-ion, 60 В, 28 А·ч (537,6 Вт·ч)</td></tr>
+                    <tr><td>Резервная АКБ</td><td>Li-ion, 24 В, 30 А·ч</td></tr>
+                    <tr><td>Солнечные панели</td><td>Пиковая мощность 128 Вт, выработка до 512 Вт·ч/сутки</td></tr>
+                    <tr><td>Автономность — только основная АКБ</td><td>10 ч 45 мин</td></tr>
+                    <tr><td>Автономность — основная АКБ + солнце</td><td>21 ч 00 мин</td></tr>
+                    <tr><td>Автономность — основная + резервная + солнце</td><td>39 ч 09 мин</td></tr>
+                </table>
+            </div>
             
             <h3>5.3. Система управления</h3>
-            <table class="data-table">
-                <tr><td>Основной процессор</td><td>Raspberry Pi 4 (4 ГБ)</td></tr>
-                <tr><td>Микроконтроллеры</td><td>STM32F407VET6 × 2, Arduino Uno × 3, Arduino Mega × 1</td></tr>
-                <tr><td>Память</td><td>microSD 128 ГБ</td></tr>
-                <tr><td>Номинальный ток</td><td>15 А, пиковый ток: 25 А</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><td>Основной процессор</td><td>Raspberry Pi 4 (4 ГБ)</td></tr>
+                    <tr><td>Микроконтроллеры</td><td>STM32F407VET6 × 2, Arduino Uno × 3, Arduino Mega × 1</td></tr>
+                    <tr><td>Память</td><td>microSD 128 ГБ</td></tr>
+                    <tr><td>Номинальный ток</td><td>15 А, пиковый ток: 25 А</td></tr>
+                </table>
+            </div>
             
             <h3>5.4. Система технического зрения</h3>
-            <table class="data-table">
-                <tr><th>Компонент</th><th>Количество</th><th>Назначение</th></tr>
-                <tr><td>Веб-камеры USB 1080p</td><td>4 шт.</td><td>Детектирование дефектов</td></tr>
-                <tr><td>Камера глубины Intel RealSense D430</td><td>1 шт.</td><td>Контроль зоны перед роботом</td></tr>
-                <tr><td>Лидары</td><td>2 шт.</td><td>Лазерное профилирование</td></tr>
-                <tr><td>Ультразвуковые датчики HC-SR04</td><td>6 шт.</td><td>Измерение ширины колеи</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Компонент</th><th>Количество</th><th>Назначение</th></tr>
+                    <tr><td>Веб-камеры USB 1080p</td><td>4 шт.</td><td>Детектирование дефектов</td></tr>
+                    <tr><td>Камера глубины Intel RealSense D430</td><td>1 шт.</td><td>Контроль зоны перед роботом</td></tr>
+                    <tr><td>Лидары</td><td>2 шт.</td><td>Лазерное профилирование</td></tr>
+                    <tr><td>Ультразвуковые датчики HC-SR04</td><td>6 шт.</td><td>Измерение ширины колеи</td></tr>
+                </table>
+            </div>
             
             <h3>5.5. Нейросеть распознавания</h3>
-            <table class="data-table">
-                <tr><td>Платформа</td><td>YOLO v8 (обучение на Roboflow)</td></tr>
-                <tr><td>Объём датасета</td><td>2490+ изображений</td></tr>
-                <tr><td>Категории</td><td>Посторонние предметы/ТКО и конструктивные дефекты</td></tr>
-                <tr><td>Точность</td><td>81,8% (текущая), цель — 95%+</td></tr>
-                <tr><td>Ложных срабатываний</td><td>0</td></tr>
-                <tr><td>Среднее время реакции</td><td>0,3 секунды на объект</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><td>Платформа</td><td>YOLO v8 (обучение на Roboflow)</td></tr>
+                    <tr><td>Объём датасета</td><td>2490+ изображений</td></tr>
+                    <tr><td>Категории</td><td>Посторонние предметы/ТКО и конструктивные дефекты</td></tr>
+                    <tr><td>Точность</td><td>81,8% (текущая), цель — 95%+</td></tr>
+                    <tr><td>Ложных срабатываний</td><td>0</td></tr>
+                    <tr><td>Среднее время реакции</td><td>0,3 секунды на объект</td></tr>
+                </table>
+            </div>
             
             <h3>5.6. Система связи</h3>
-            <table class="data-table">
-                <tr><th>Тип связи</th><th>Стандарт</th><th>Назначение</th></tr>
-                <tr><td>Wi-Fi</td><td>802.11 b/g/n</td><td>до 100 м</td></tr>
-                <tr><td>LTE</td><td>Cat.4</td><td>покрытие оператора</td></tr>
-                <tr><td>FRMCS/LTE-R</td><td>железнодорожный стандарт</td><td>надёжная связь в инфраструктуре РЖД</td></tr>
-                <tr><td>Bluetooth</td><td>4.2</td><td>локальная настройка</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Тип связи</th><th>Стандарт</th><th>Назначение</th></tr>
+                    <tr><td>Wi-Fi</td><td>802.11 b/g/n</td><td>до 100 м</td></tr>
+                    <tr><td>LTE</td><td>Cat.4</td><td>покрытие оператора</td></tr>
+                    <tr><td>FRMCS/LTE-R</td><td>железнодорожный стандарт</td><td>надёжная связь в инфраструктуре РЖД</td></tr>
+                    <tr><td>Bluetooth</td><td>4.2</td><td>локальная настройка</td></tr>
+                </table>
+            </div>
             <p style="text-indent:0;">Передача телеметрии: каждые 30 сек (в движении), каждые 3 мин (на стоянке).</p>
         </div>
 
@@ -1130,7 +1293,7 @@
             
             <div class="photo-block">
                 <div class="photo-frame" style="height:380px;">
-                    <img src="pic5.jpg" alt="3D-модель корпуса робота МЗ-Д4">
+                    <img src="pic5.png" alt="3D-модель корпуса робота МЗ-Д4">
                 </div>
                 <div class="photo-caption">Рис. 5. Трёхмерная модель корпуса робота на железнодорожных путях</div>
             </div>
@@ -1182,7 +1345,7 @@
             
             <div class="photo-block">
                 <div class="photo-frame" style="height:350px;">
-                    <img src="pic6.jpg" alt="Испытания на Малой Октябрьской ж/д">
+                    <img src="pic6.png" alt="Испытания на Малой Октябрьской ж/д">
                 </div>
                 <div class="photo-caption">Рис. 6. Контрольные испытания прототипа на полигоне Малой Октябрьской железной дороги</div>
             </div>
@@ -1191,77 +1354,91 @@
             <p><strong>Дата:</strong> 18.09.2026. <strong>Место:</strong> Малая Октябрьская детская железная дорога.</p>
             <p><strong>Заложенные дефекты (11 шт.):</strong> 4 трещины на рельсе, 2 трещины на шпале, 1 отсутствие болта, 2 из 3 вмятин, 1 неровность, 1 износ (не определён из-за освещения).</p>
             
-            <table class="data-table">
-                <tr><td>Обнаружено дефектов</td><td><strong>10 из 11</strong></td></tr>
-                <tr><td>Правильно классифицировано</td><td><strong>10</strong></td></tr>
-                <tr><td>Ложных срабатываний</td><td><strong>0</strong></td></tr>
-                <tr><td>Точность классификации</td><td><strong>81,8%</strong></td></tr>
-                <tr><td>Среднее время реакции</td><td><strong>0,3 сек/объект</strong></td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><td>Обнаружено дефектов</td><td><strong>10 из 11</strong></td></tr>
+                    <tr><td>Правильно классифицировано</td><td><strong>10</strong></td></tr>
+                    <tr><td>Ложных срабатываний</td><td><strong>0</strong></td></tr>
+                    <tr><td>Точность классификации</td><td><strong>81,8%</strong></td></tr>
+                    <tr><td>Среднее время реакции</td><td><strong>0,3 сек/объект</strong></td></tr>
+                </table>
+            </div>
             
             <h3>8.2. Тестирование автономности</h3>
-            <table class="data-table">
-                <tr><th>Режим работы</th><th>Расчётное время</th><th>Фактическое время</th></tr>
-                <tr><td>Только основная АКБ</td><td>10 ч 45 мин</td><td>10 ч 38 мин</td></tr>
-                <tr><td>Основная АКБ + солнце</td><td>21 ч 00 мин</td><td>20 ч 45 мин</td></tr>
-                <tr><td>Основная + резервная + солнце</td><td>39 ч 09 мин</td><td>38 ч 50 мин</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Режим работы</th><th>Расчётное время</th><th>Фактическое время</th></tr>
+                    <tr><td>Только основная АКБ</td><td>10 ч 45 мин</td><td>10 ч 38 мин</td></tr>
+                    <tr><td>Основная АКБ + солнце</td><td>21 ч 00 мин</td><td>20 ч 45 мин</td></tr>
+                    <tr><td>Основная + резервная + солнце</td><td>39 ч 09 мин</td><td>38 ч 50 мин</td></tr>
+                </table>
+            </div>
             
             <h3>8.3. Тестирование в условиях, приближённых к реальным</h3>
-            <table class="data-table">
-                <tr><th>Параметр</th><th>Результат</th></tr>
-                <tr><td>Проходимость</td><td>Преодоление неровностей без сбоев</td></tr>
-                <tr><td>Герметичность</td><td>IP58 подтверждена</td></tr>
-                <tr><td>Термостабильность</td><td>Работа в диапазоне температур</td></tr>
-                <tr><td>Устойчивость к вибрации</td><td>Без повреждений электроники</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Параметр</th><th>Результат</th></tr>
+                    <tr><td>Проходимость</td><td>Преодоление неровностей без сбоев</td></tr>
+                    <tr><td>Герметичность</td><td>IP58 подтверждена</td></tr>
+                    <tr><td>Термостабильность</td><td>Работа в диапазоне температур</td></tr>
+                    <tr><td>Устойчивость к вибрации</td><td>Без повреждений электроники</td></tr>
+                </table>
+            </div>
         </div>
 
         <div id="note-9" class="note-section">
             <h2>9. Экономика проекта</h2>
             
             <h3>9.1. Инвестиции (CAPEX)</h3>
-            <table class="data-table">
-                <tr><th>Статья расходов</th><th>Сумма</th></tr>
-                <tr><td>Прототип робота МЗ-Д4</td><td>505 923 руб.</td></tr>
-                <tr><td>Оборудование мастерской</td><td>591 500 руб.</td></tr>
-                <tr><td>Помещение и ремонт</td><td>325 000 руб.</td></tr>
-                <tr><td>Юридическое оформление</td><td>65 800 руб.</td></tr>
-                <tr><td>Внедрение и сертификация</td><td>3 500 000 руб.</td></tr>
-                <tr><td><strong>ИТОГО CAPEX</strong></td><td><strong>4 988 223 руб.</strong></td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Статья расходов</th><th>Сумма</th></tr>
+                    <tr><td>Прототип робота МЗ-Д4</td><td>505 923 руб.</td></tr>
+                    <tr><td>Оборудование мастерской</td><td>591 500 руб.</td></tr>
+                    <tr><td>Помещение и ремонт</td><td>325 000 руб.</td></tr>
+                    <tr><td>Юридическое оформление</td><td>65 800 руб.</td></tr>
+                    <tr><td>Внедрение и сертификация</td><td>3 500 000 руб.</td></tr>
+                    <tr><td><strong>ИТОГО CAPEX</strong></td><td><strong>4 988 223 руб.</strong></td></tr>
+                </table>
+            </div>
             
             <h3>9.2. Ежегодные затраты (OPEX)</h3>
-            <table class="data-table">
-                <tr><th>Статья расходов</th><th>Сумма</th></tr>
-                <tr><td>Разработка (1-й год)</td><td>5 118 000 руб./год</td></tr>
-                <tr><td>Эксплуатация (со 2-го года)</td><td>3 959 645 руб./год</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Статья расходов</th><th>Сумма</th></tr>
+                    <tr><td>Разработка (1-й год)</td><td>5 118 000 руб./год</td></tr>
+                    <tr><td>Эксплуатация (со 2-го года)</td><td>3 959 645 руб./год</td></tr>
+                </table>
+            </div>
             
             <h3>9.3. Экономический эффект (участок 15 км)</h3>
-            <table class="data-table">
-                <tr><th>Показатель</th><th>ДО внедрения</th><th>ПОСЛЕ внедрения</th><th>Изменение</th></tr>
-                <tr><td>Персонал</td><td>8 чел.</td><td>2 чел.</td><td><strong>−75%</strong></td></tr>
-                <tr><td>Затраты на персонал</td><td>6 240 000 руб./год</td><td>2 184 000 руб./год</td><td><strong>−4 056 000 руб.</strong></td></tr>
-                <tr><td>Материалы и оборудование</td><td>470 000 руб./год</td><td>376 000 руб./год</td><td><strong>−94 000 руб.</strong></td></tr>
-                <tr><td>Обслуживание</td><td>0 руб./год</td><td>1 239 645 руб./год</td><td>+1 239 645 руб.</td></tr>
-                <tr><td>Прочие затраты</td><td>760 000 руб./год</td><td>425 000 руб./год</td><td><strong>−335 000 руб.</strong></td></tr>
-                <tr><td><strong>ИТОГО ЗАТРАТЫ В ГОД</strong></td><td><strong>7 470 000 руб.</strong></td><td><strong>4 224 645 руб.</strong></td><td><strong style="color:#2d7d2d;">−3 245 355 руб.</strong></td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Показатель</th><th>ДО внедрения</th><th>ПОСЛЕ внедрения</th><th>Изменение</th></tr>
+                    <tr><td>Персонал</td><td>8 чел.</td><td>2 чел.</td><td><strong>−75%</strong></td></tr>
+                    <tr><td>Затраты на персонал</td><td>6 240 000 руб./год</td><td>2 184 000 руб./год</td><td><strong>−4 056 000 руб.</strong></td></tr>
+                    <tr><td>Материалы и оборудование</td><td>470 000 руб./год</td><td>376 000 руб./год</td><td><strong>−94 000 руб.</strong></td></tr>
+                    <tr><td>Обслуживание</td><td>0 руб./год</td><td>1 239 645 руб./год</td><td>+1 239 645 руб.</td></tr>
+                    <tr><td>Прочие затраты</td><td>760 000 руб./год</td><td>425 000 руб./год</td><td><strong>−335 000 руб.</strong></td></tr>
+                    <tr><td><strong>ИТОГО ЗАТРАТЫ В ГОД</strong></td><td><strong>7 470 000 руб.</strong></td><td><strong>4 224 645 руб.</strong></td><td><strong style="color:#2d7d2d;">−3 245 355 руб.</strong></td></tr>
+                </table>
+            </div>
             
             <h3>9.4. Показатели эффективности</h3>
-            <table class="data-table">
-                <tr><th>Показатель</th><th>Значение</th></tr>
-                <tr><td>Чистая экономия в год</td><td><strong>3 245 355 руб. (−43%)</strong></td></tr>
-                <tr><td>Срок окупаемости</td><td><strong>1,54 года (~18,5 месяцев)</strong></td></tr>
-                <tr><td>ROI за 3 года</td><td><strong>195%</strong></td></tr>
-                <tr><td>ROI за 5 лет</td><td><strong>326%</strong></td></tr>
-                <tr><td>Стоимость обслуживания 1 км пути</td><td>250 000 → 27 050 руб./год <strong>(−89%)</strong></td></tr>
-                <tr><td>Время уборки 15 км</td><td>16 ч → 6 ч <strong>(↓ в 2,7 раза)</strong></td></tr>
-                <tr><td>Простой путей</td><td>72 ч/год → 24 ч/год <strong>(↓67%)</strong></td></tr>
-                <tr><td>Риск травматизма</td><td>5% → 0,5% <strong>(↓ в 10 раз)</strong></td></tr>
-                <tr><td>Качество уборки</td><td>75% → 95% <strong>(↑20%)</strong></td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Показатель</th><th>Значение</th></tr>
+                    <tr><td>Чистая экономия в год</td><td><strong>3 245 355 руб. (−43%)</strong></td></tr>
+                    <tr><td>Срок окупаемости</td><td><strong>1,54 года (~18,5 месяцев)</strong></td></tr>
+                    <tr><td>ROI за 3 года</td><td><strong>195%</strong></td></tr>
+                    <tr><td>ROI за 5 лет</td><td><strong>326%</strong></td></tr>
+                    <tr><td>Стоимость обслуживания 1 км пути</td><td>250 000 → 27 050 руб./год <strong>(−89%)</strong></td></tr>
+                    <tr><td>Время уборки 15 км</td><td>16 ч → 6 ч <strong>(↓ в 2,7 раза)</strong></td></tr>
+                    <tr><td>Простой путей</td><td>72 ч/год → 24 ч/год <strong>(↓67%)</strong></td></tr>
+                    <tr><td>Риск травматизма</td><td>5% → 0,5% <strong>(↓ в 10 раз)</strong></td></tr>
+                    <tr><td>Качество уборки</td><td>75% → 95% <strong>(↑20%)</strong></td></tr>
+                </table>
+            </div>
         </div>
 
         <div id="note-10" class="note-section">
@@ -1352,68 +1529,74 @@
         
         <div class="note-section">
             <h2>Структура затрат (CAPEX + OPEX)</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Категория</th>
-                        <th>Сумма</th>
-                        <th>Обоснование</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="3" style="background:#f0f0f0; font-weight:bold;">CAPEX (разовые)</td></tr>
-                    <tr><td>Прототип робота МЗ-Д4</td><td>505 923 руб.</td><td>Комплектующие + доставка + резерв 10%</td></tr>
-                    <tr><td>Оборудование мастерской</td><td>591 500 руб.</td><td>Токарный станок, 3D-принтер, сварка, инструмент</td></tr>
-                    <tr><td>Помещение и ремонт</td><td>325 000 руб.</td><td>Аренда, электрика 380 В, вентиляция</td></tr>
-                    <tr><td>Юридическое оформление</td><td>65 800 руб.</td><td>ИП, товарный знак, ЭДО с РЖД</td></tr>
-                    <tr><td>Внедрение и сертификация</td><td>3 500 000 руб.</td><td>Сертификация РЖД, испытания, пилот, интеграция</td></tr>
-                    <tr><td><strong>ИТОГО CAPEX</strong></td><td><strong>4 988 223 руб.</strong></td><td></td></tr>
-                    <tr><td colspan="3" style="background:#f0f0f0; font-weight:bold;">OPEX (ежегодные)</td></tr>
-                    <tr><td>Разработка (1-й год)</td><td>5 118 000 руб./год</td><td>Персонал (3 чел.), аренда, обслуживание оборудования</td></tr>
-                    <tr><td>Эксплуатация (со 2-го года)</td><td>3 959 645 руб./год</td><td>Персонал (2 чел.), ТО робота, амортизация, связь</td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Сумма</th>
+                            <th>Обоснование</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3" style="background:#f0f0f0; font-weight:bold;">CAPEX (разовые)</td></tr>
+                        <tr><td>Прототип робота МЗ-Д4</td><td>505 923 руб.</td><td>Комплектующие + доставка + резерв 10%</td></tr>
+                        <tr><td>Оборудование мастерской</td><td>591 500 руб.</td><td>Токарный станок, 3D-принтер, сварка, инструмент</td></tr>
+                        <tr><td>Помещение и ремонт</td><td>325 000 руб.</td><td>Аренда, электрика 380 В, вентиляция</td></tr>
+                        <tr><td>Юридическое оформление</td><td>65 800 руб.</td><td>ИП, товарный знак, ЭДО с РЖД</td></tr>
+                        <tr><td>Внедрение и сертификация</td><td>3 500 000 руб.</td><td>Сертификация РЖД, испытания, пилот, интеграция</td></tr>
+                        <tr><td><strong>ИТОГО CAPEX</strong></td><td><strong>4 988 223 руб.</strong></td><td></td></tr>
+                        <tr><td colspan="3" style="background:#f0f0f0; font-weight:bold;">OPEX (ежегодные)</td></tr>
+                        <tr><td>Разработка (1-й год)</td><td>5 118 000 руб./год</td><td>Персонал (3 чел.), аренда, обслуживание оборудования</td></tr>
+                        <tr><td>Эксплуатация (со 2-го года)</td><td>3 959 645 руб./год</td><td>Персонал (2 чел.), ТО робота, амортизация, связь</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="note-section">
             <h2>Сравнение ДО и ПОСЛЕ внедрения (участок 15 км)</h2>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Показатель</th>
-                        <th>ДО (ручной труд, 8 чел.)</th>
-                        <th>ПОСЛЕ (робот + 2 чел.)</th>
-                        <th>Изменение</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Затраты на персонал</td><td>6 240 000 руб./год</td><td>2 184 000 руб./год</td><td><strong style="color:#2d7d2d;">−4 056 000 руб.</strong></td></tr>
-                    <tr><td>Материалы и оборудование</td><td>470 000 руб./год</td><td>376 000 руб./год</td><td><strong style="color:#2d7d2d;">−94 000 руб.</strong></td></tr>
-                    <tr><td>Обслуживание</td><td>0 руб./год</td><td>1 239 645 руб./год</td><td>+1 239 645 руб.</td></tr>
-                    <tr><td>Прочие затраты</td><td>760 000 руб./год</td><td>425 000 руб./год</td><td><strong style="color:#2d7d2d;">−335 000 руб.</strong></td></tr>
-                    <tr><td><strong>ИТОГО ЗАТРАТЫ В ГОД</strong></td><td><strong>7 470 000 руб.</strong></td><td><strong>4 224 645 руб.</strong></td><td><strong style="color:#2d7d2d;">−3 245 355 руб.</strong></td></tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Показатель</th>
+                            <th>ДО (ручной труд, 8 чел.)</th>
+                            <th>ПОСЛЕ (робот + 2 чел.)</th>
+                            <th>Изменение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Затраты на персонал</td><td>6 240 000 руб./год</td><td>2 184 000 руб./год</td><td><strong style="color:#2d7d2d;">−4 056 000 руб.</strong></td></tr>
+                        <tr><td>Материалы и оборудование</td><td>470 000 руб./год</td><td>376 000 руб./год</td><td><strong style="color:#2d7d2d;">−94 000 руб.</strong></td></tr>
+                        <tr><td>Обслуживание</td><td>0 руб./год</td><td>1 239 645 руб./год</td><td>+1 239 645 руб.</td></tr>
+                        <tr><td>Прочие затраты</td><td>760 000 руб./год</td><td>425 000 руб./год</td><td><strong style="color:#2d7d2d;">−335 000 руб.</strong></td></tr>
+                        <tr><td><strong>ИТОГО ЗАТРАТЫ В ГОД</strong></td><td><strong>7 470 000 руб.</strong></td><td><strong>4 224 645 руб.</strong></td><td><strong style="color:#2d7d2d;">−3 245 355 руб.</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="note-section">
             <h2>Экономический эффект</h2>
-            <table class="data-table">
-                <tr><th>Показатель</th><th>Значение</th></tr>
-                <tr><td>Чистая экономия в год</td><td><strong style="color:#2d7d2d; font-size:1.15rem;">3 245 355 руб. (−43%)</strong></td></tr>
-                <tr><td>Срок окупаемости</td><td><strong style="font-size:1.15rem;">1,54 года (~18,5 месяцев)</strong></td></tr>
-                <tr><td>ROI за 3 года</td><td><strong>195%</strong> (экономия 4,75 млн руб.)</td></tr>
-                <tr><td>ROI за 5 лет</td><td><strong style="color:#2d7d2d;">326%</strong> (экономия 11,24 млн руб.)</td></tr>
-                <tr><td>Персонал</td><td>8 чел. → 2 чел. (<strong>↓75%</strong>)</td></tr>
-                <tr><td>Время уборки 15 км</td><td>16 ч → 6 ч (<strong>↓ в 2,7 раза</strong>)</td></tr>
-                <tr><td>Простой путей</td><td>72 ч/год → 24 ч/год (<strong>↓67%</strong>)</td></tr>
-                <tr><td>Риск травматизма</td><td>5% → 0,5% (<strong>↓ в 10 раз</strong>)</td></tr>
-                <tr><td>Качество уборки</td><td>75% → 95% (<strong>↑20%</strong>)</td></tr>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <tr><th>Показатель</th><th>Значение</th></tr>
+                    <tr><td>Чистая экономия в год</td><td><strong style="color:#2d7d2d; font-size:1.15rem;">3 245 355 руб. (−43%)</strong></td></tr>
+                    <tr><td>Срок окупаемости</td><td><strong style="font-size:1.15rem;">1,54 года (~18,5 месяцев)</strong></td></tr>
+                    <tr><td>ROI за 3 года</td><td><strong>195%</strong> (экономия 4,75 млн руб.)</td></tr>
+                    <tr><td>ROI за 5 лет</td><td><strong style="color:#2d7d2d;">326%</strong> (экономия 11,24 млн руб.)</td></tr>
+                    <tr><td>Персонал</td><td>8 чел. → 2 чел. (<strong>↓75%</strong>)</td></tr>
+                    <tr><td>Время уборки 15 км</td><td>16 ч → 6 ч (<strong>↓ в 2,7 раза</strong>)</td></tr>
+                    <tr><td>Простой путей</td><td>72 ч/год → 24 ч/год (<strong>↓67%</strong>)</td></tr>
+                    <tr><td>Риск травматизма</td><td>5% → 0,5% (<strong>↓ в 10 раз</strong>)</td></tr>
+                    <tr><td>Качество уборки</td><td>75% → 95% (<strong>↑20%</strong>)</td></tr>
+                </table>
+            </div>
         </div>
 
         <div class="photo-block">
-            <div class="photo-frame" style="height:400px;">
+            <div class="photo-frame" style="aspect-ratio: 1280 / 960; height: auto;">
                 <img src="pic7.png" alt="Прототип МЗ-Д4 на железнодорожных путях">
             </div>
             <div class="photo-caption">Рис. 7. Функциональный прототип робота МЗ-Д4 на испытательном полигоне</div>
@@ -1430,6 +1613,12 @@ function showSection(sectionId, linkEl) {
     if (linkEl) linkEl.classList.add('active');
     
     window.scrollTo(0, 0);
+}
+
+// Функция для мобильного меню
+function toggleMenu() {
+    const navLinks = document.getElementById('navLinks');
+    navLinks.classList.toggle('active');
 }
 
 let currentSlide = 1;
