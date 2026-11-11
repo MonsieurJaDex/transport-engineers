@@ -116,7 +116,13 @@
     
     /* Sections */
     .section { display: none; padding-top: 65px; }
-    .section.active { display: block; }
+    .section.active,
+    .section:target { display: block; }
+
+    /* Если JavaScript отключён, URL-якорь всё равно открывает нужный раздел. */
+    @supports selector(body:has(.section:target)) {
+        body:has(.section:target) .section.active:not(:target) { display: none; }
+    }
     
     /* Hero */
     .hero {
@@ -189,6 +195,10 @@
         font-family: 'Open Sans', sans-serif;
         letter-spacing: 0.5px;
         text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
     }
     
     .btn-primary {
@@ -1440,15 +1450,15 @@
     </div>
 
     <button class="menu-toggle" type="button" aria-label="Открыть меню"
-            aria-expanded="false" aria-controls="navLinks" onclick="toggleMenu()">
+            aria-expanded="false" aria-controls="navLinks">
         <span aria-hidden="true">☰</span>
     </button>
 
     <div class="nav-links" id="navLinks">
-        <button type="button" class="nav-link active" data-section="home" aria-current="page" onclick="showSection('home', this)">Главная</button>
-        <button type="button" class="nav-link" data-section="presentation" onclick="showSection('presentation', this)">Презентация</button>
-        <button type="button" class="nav-link" data-section="explanatory" onclick="showSection('explanatory', this)">Пояснительная записка</button>
-        <button type="button" class="nav-link" data-section="economics" onclick="showSection('economics', this)">Экономика</button>
+        <a class="nav-link active" data-section="home" data-navigate="home" href="#home" aria-current="page">Главная</a>
+        <a class="nav-link" data-section="presentation" data-navigate="presentation" href="#presentation">Презентация</a>
+        <a class="nav-link" data-section="explanatory" data-navigate="explanatory" href="#explanatory">Пояснительная записка</a>
+        <a class="nav-link" data-section="economics" data-navigate="economics" href="#economics">Экономика</a>
     </div>
 
     <div class="nav-logos" aria-label="Логотипы организаторов">
@@ -1465,8 +1475,8 @@
             <h1>Автономный робототехнический комплекс <span>МЗ-Д4</span></h1>
             <p class="hero-subtitle">Интеллектуальная система для инспекции, очистки и ремонта железнодорожной инфраструктуры без остановки движения поездов</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary" onclick="showSection('presentation', document.querySelector('[data-section="presentation"]'))">Презентация проекта</button>
-                <button class="btn btn-secondary" onclick="showSection('explanatory', document.querySelector('[data-section="explanatory"]'))">Пояснительная записка</button>
+                <a class="btn btn-primary" data-navigate="presentation" href="#presentation">Презентация проекта</a>
+                <a class="btn btn-secondary" data-navigate="explanatory" href="#explanatory">Пояснительная записка</a>
             </div>
         </div>
     </div>
@@ -2379,17 +2389,19 @@
 </section>
 
 <script>
-function showSection(sectionId, linkEl) {
+function showSection(sectionId, linkEl, options = {}) {
     const target = document.getElementById(sectionId);
-    if (!target) return;
+    if (!target || !target.classList.contains('section')) return;
 
     document.querySelectorAll('.section').forEach(section => {
-        section.classList.toggle('active', section === target);
-        section.setAttribute('aria-hidden', String(section !== target));
+        const isActive = section === target;
+        section.classList.toggle('active', isActive);
+        section.setAttribute('aria-hidden', String(!isActive));
     });
 
+    const activeLink = linkEl || document.querySelector(`.nav-link[data-section="${sectionId}"]`);
     document.querySelectorAll('.nav-link').forEach(link => {
-        const isActive = link === linkEl;
+        const isActive = link === activeLink;
         link.classList.toggle('active', isActive);
         if (isActive) {
             link.setAttribute('aria-current', 'page');
@@ -2399,8 +2411,20 @@ function showSection(sectionId, linkEl) {
     });
 
     toggleMenu(false);
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+
+    if (options.updateHash) {
+        try {
+            window.history.replaceState(null, '', `#${sectionId}`);
+        } catch (error) {
+            // Для локального file:// запуска используем обычный URL-якорь.
+            window.location.hash = sectionId;
+        }
+    }
+
+    if (options.scroll !== false) {
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    }
 }
 
 function toggleMenu(forceOpen) {
@@ -2416,6 +2440,28 @@ function toggleMenu(forceOpen) {
     menuToggle.setAttribute('aria-expanded', String(shouldOpen));
     menuToggle.setAttribute('aria-label', shouldOpen ? 'Закрыть меню' : 'Открыть меню');
 }
+
+// Единая обработка переходов: работает и для меню, и для кнопок первого экрана.
+document.addEventListener('click', event => {
+    const navigationLink = event.target.closest('[data-navigate]');
+    if (navigationLink) {
+        const sectionId = navigationLink.dataset.navigate;
+        const activeNavLink = document.querySelector(`.nav-link[data-section="${sectionId}"]`);
+
+        if (document.getElementById(sectionId)) {
+            event.preventDefault();
+            showSection(sectionId, activeNavLink, { updateHash: true });
+        }
+        return;
+    }
+
+    if (event.target.closest('.menu-toggle')) {
+        toggleMenu();
+        return;
+    }
+
+    if (!event.target.closest('.nav')) toggleMenu(false);
+});
 
 // Add a compact/scrollable mode to tables depending on their real column count.
 document.querySelectorAll('.table-responsive').forEach(wrapper => {
@@ -2506,14 +2552,15 @@ document.addEventListener('keydown', event => {
     if (event.key === 'ArrowLeft') changeSlide(-1);
 });
 
-document.addEventListener('click', event => {
-    if (!event.target.closest('.nav')) toggleMenu(false);
-});
-
 // Keep the initially visible section in sync with assistive technology.
 document.querySelectorAll('.section').forEach(section => {
     section.setAttribute('aria-hidden', String(!section.classList.contains('active')));
 });
+
+const initialSectionId = window.location.hash.slice(1);
+if (initialSectionId && document.getElementById(initialSectionId)?.classList.contains('section')) {
+    showSection(initialSectionId, null, { scroll: false });
+}
 
 initSlideDots();
 updateSlide();
